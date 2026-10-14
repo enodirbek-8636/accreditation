@@ -106,6 +106,9 @@ button{font-family:inherit;cursor:pointer}
 .kpi-pct{font-size:12.5px;font-weight:600;margin-top:3px}
 .kpi-bar{height:6px;border-radius:6px;background:var(--c-bg);margin-top:11px;overflow:hidden}
 .kpi-bar span{display:block;height:100%;border-radius:6px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+/* scroll reveal: экранга кирганда пайдо бўлиш */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.rv.rv-in{opacity:1;transform:none}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
 
 /* ---------- Layout ---------- */
@@ -4719,6 +4722,108 @@ function init(){
   console.info(`Текширув → Аризалар: ${t.appTotal} (111) | Дастурлар: ${t.progTotal} (476) | Ўтган: ${t.progPassed} (319) | Жараёнда: ${t.progInProgress} (130) | Ўтмаган: ${t.progFailed} (27)`);
 }
 document.addEventListener('DOMContentLoaded', init);
+
+/* ============ 28. КЎРИНИШ АНИМАЦИЯСИ (scroll reveal) ============
+   Рақамлар, карточкалар ва диаграммалар экранга кирганда (ва скролл билан
+   қайтиб келганда) қайтадан анимация билан шаклланади. */
+const REVEAL_SEL = '#appMain .kpi-card, #appMain .panel, #appMain .section-title, #appMain .chart, #appMain .kpi-value, #appMain .rank-score, #appMain .kpi-bar span';
+const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// echarts: ҳар бир setOption вақтини белгилаб борамиз (янги чизилганини қайта бошламаслик учун)
+(function patchEcharts(){
+  if(typeof echarts==='undefined') return;
+  const _init = echarts.init;
+  echarts.init = function(){
+    const inst = _init.apply(this, arguments);
+    const so = inst.setOption;
+    inst.setOption = function(){ inst.__lastSet = performance.now(); return so.apply(inst, arguments); };
+    return inst;
+  };
+})();
+
+// рақамни 0 дан якуний қийматгача "санаш"
+function countUpText(el, dur){
+  const finalText = el.dataset.rvFinal != null ? el.dataset.rvFinal : el.textContent;
+  el.dataset.rvFinal = finalText;
+  if(reduceMotion()) { el.textContent = finalText; return; }
+  if(/\d{2}\.\d{2}\.\d{4}/.test(finalText)) { el.textContent = finalText; return; }  // сана — санамаймиз
+  const m = finalText.match(/-?\d[\d  ]*(?:[.,]\d+)?/);
+  if(!m){ el.textContent = finalText; return; }
+  const raw = m[0], hasSep = /[  ]/.test(raw);
+  const decSep = raw.includes(',') && !raw.includes('.') ? ',' : '.';
+  const decimals = (raw.split(/[.,]/)[1]||'').length;
+  if(decimals>2){ el.textContent = finalText; return; }
+  const target = parseFloat(raw.replace(/[  ]/g,'').replace(',','.'));
+  if(!isFinite(target)){ el.textContent = finalText; return; }
+  const pre = finalText.slice(0, m.index), post = finalText.slice(m.index + raw.length);
+  const fmt = v => decimals>0 ? v.toFixed(decimals).replace('.', decSep) : (hasSep ? fmtNum(v) : String(Math.round(v)));
+  if(el.__rvRaf) cancelAnimationFrame(el.__rvRaf);
+  const start = performance.now(), D = dur || 1100;
+  const step = now => {
+    const t = clamp((now-start)/D, 0, 1), e = 1-Math.pow(1-t,3);
+    el.textContent = pre + fmt(target*e) + post;
+    if(t<1) el.__rvRaf = requestAnimationFrame(step); else { el.textContent = finalText; el.__rvRaf = null; }
+  };
+  el.__rvRaf = requestAnimationFrame(step);
+}
+// эски animateNumber: якуний матнни қўяди; анимацияни кузатувчи (IO) бошқаради
+animateNumber = function(el, target, isPct){
+  el.textContent = isPct ? fmtPct(target) : fmtNum(target);
+  delete el.dataset.rvFinal;
+  if(!el.matches(REVEAL_SEL)) countUpText(el);
+};
+function replayChart(el){
+  if(typeof echarts==='undefined') return;
+  const inst = echarts.getInstanceByDom(el);
+  if(!inst || inst.isDisposed()) return;
+  if(inst.__lastSet && performance.now() - inst.__lastSet < 900) return;   // ҳозиргина чизилган
+  try{
+    const opt = inst.getOption();
+    if(!opt || !opt.series || !opt.series.length) return;
+    inst.setOption(opt, {notMerge:true});
+  }catch(e){ /* қайта чизиб бўлмаса — жим ўтамиз */ }
+}
+let revealIO = null;
+function onReveal(entries){
+  for(const en of entries){
+    const el = en.target;
+    if(en.isIntersecting){
+      if(el.classList.contains('rv')) el.classList.add('rv-in');
+      if(el.matches('.kpi-value, .rank-score')) countUpText(el);
+      else if(el.classList.contains('chart')) replayChart(el);
+      else if(el.matches('.kpi-bar span') && el.dataset.w) { el.style.width = '0%'; requestAnimationFrame(()=>requestAnimationFrame(()=>{ el.style.width = el.dataset.w + '%'; })); }
+    } else {
+      if(el.classList.contains('rv')) el.classList.remove('rv-in');
+      if(el.matches('.kpi-bar span')) el.style.width = '0%';
+    }
+  }
+}
+function revealScan(){
+  if(!revealIO) return;
+  $$(REVEAL_SEL).forEach(el=>{
+    if(el.dataset.rv) return;
+    el.dataset.rv = '1';
+    if(el.matches('.kpi-card, .panel, .section-title')){
+      el.classList.add('rv');
+      if(el.classList.contains('kpi-card')){
+        const sib = Array.from(el.parentElement.children).indexOf(el);
+        el.style.transitionDelay = (sib % 8) * 55 + 'ms';
+      }
+    }
+    revealIO.observe(el);
+  });
+}
+function initReveal(){
+  if(reduceMotion() || !('IntersectionObserver' in window)) return;
+  revealIO = new IntersectionObserver(onReveal, {threshold: 0, rootMargin: '0px 0px -8% 0px'});
+  revealScan();
+  const main = document.getElementById('appMain');
+  if(main){
+    let tmr = null;
+    new MutationObserver(()=>{ clearTimeout(tmr); tmr = setTimeout(revealScan, 80); }).observe(main, {childList:true, subtree:true});
+  }
+}
+document.addEventListener('DOMContentLoaded', ()=>setTimeout(initReveal, 0));
 </script>
 </body>
 </html>

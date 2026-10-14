@@ -2931,6 +2931,10 @@ function viewOwners(root) {
    AKKREDITATSIYA GRAFIGI — interaktiv Gantt uslubidagi tarmoq timeline (§10–12)
    ========================================================================== */
 const TL_DEFAULT_FROM = 2020, TL_DEFAULT_TO = 2030;   // standart koʻrinish: 2020–2030
+/* Grafikdagi hududlar ketma-ketligi (buyurtmachi talabi) */
+const TL_REGION_ORDER = ["Qoraqalpog'iston Respublikasi", 'Andijon viloyati', 'Buxoro viloyati', "Farg'ona viloyati", 'Jizzax viloyati',
+  'Namangan viloyati', 'Navoiy viloyati', 'Qashqadaryo viloyati', 'Samarqand viloyati', 'Sirdaryo viloyati', 'Surxondaryo viloyati',
+  'Toshkent viloyati', 'Xorazm viloyati', 'Toshkent shahri'];
 function tlRange() {
   const from = STATE.timeline.from || TL_DEFAULT_FROM;
   const to = STATE.timeline.to || TL_DEFAULT_TO;
@@ -3029,7 +3033,7 @@ function viewTimeline(root) {
   rows.forEach(r => { const k = tlGroupKey(r); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); });
   const orderedKeys = Array.from(groups.keys()).sort((a, b) => {
     const g = STATE.timeline.group;
-    if (g === 'region') return REGION_ORDER.indexOf(a) - REGION_ORDER.indexOf(b);
+    if (g === 'region') return TL_REGION_ORDER.indexOf(a) - TL_REGION_ORDER.indexOf(b);
     if (g === 'level') return LEVEL_ORDER.indexOf(a) - LEVEL_ORDER.indexOf(b);
     if (g === 'owner') return OWNER_ORDER.indexOf(a) - OWNER_ORDER.indexOf(b);
     if (g === 'status') return STATUS_ORDER.indexOf(a) - STATUS_ORDER.indexOf(b);
@@ -3090,6 +3094,56 @@ function tlRow(r, R, nowPos, yearCount) {
   if (nowPos != null && nowPos >= 0 && nowPos <= 100) track.appendChild(el('div', { class: 'gl now', style: { left: nowPos + '%' }, title: t('c.today') }));
 
   const dlISO = r.accreditationDeadline;
+
+  /* ---- JARAYONDA: ariza sanasidan boshlanadigan chiziq ----
+     Yorliq "Jarayonda {ariza sanasi}" ariza nuqtasidan chapda, chiziq esa ariza sanasidan
+     bugungi kungacha davom etadi. Agar avvalgi akkreditatsiya muddati ariza sanasidan oldin
+     tugagan boʻlsa, u oʻz tugash sanasi bilan alohida (chapda) chiziladi. */
+  if (st === 'progress' && r.applicationDate) {
+    const appISO = r.applicationDate;
+    const appIn = appISO >= R.startISO && appISO <= R.endISO;
+    const ap = appIn ? tlPos(appISO, R) : (appISO < R.startISO ? 0 : 100);
+    /* 1) avvalgi muddat (bor boʻlsa) */
+    if (dlISO) {
+      const dp = dlISO >= R.startISO && dlISO <= R.endISO ? tlPos(dlISO, R) : (dlISO < R.startISO ? 0 : 100);
+      const endedBefore = dlISO < appISO;
+      const tone = endedBefore ? STATUS_COLOR.overdue : STATUS_COLOR.nodata;
+      const anchor0 = r.reorganizationDate || r.accreditationDate || r.establishmentDate;
+      let s0 = anchor0 ? tlPos(anchor0, R) : 0; if (s0 == null || s0 < 0) s0 = 0;
+      if (dp > s0) track.appendChild(el('div', { class: 'tl-bar', style: { left: s0 + '%', width: Math.max(0.6, dp - s0) + '%', background: tone } }));
+      const dmk = el('button', { class: 'tl-mk', type: 'button', style: { left: dp + '%', background: tone }, 'aria-label': r.organizationName + ' — ' + fmtDate(dlISO) });
+      dmk.addEventListener('click', () => openOrg(r.id));
+      attachTip(dmk, () => `<b>${esc(r.organizationName)}</b>` + tipRows([
+        [t('c.deadline2'), fmtDate(dlISO)],
+        [t('c.basis'), t('basis.' + r.deadlineBasis)],
+        [t('c.app'), fmtDate(appISO), STATUS_COLOR.progress]
+      ]));
+      track.appendChild(dmk);
+      /* tugash sanasi yorligʻi — markerdan chapda (keyingi "Jarayonda" yorligʻi bilan toʻqnashmasligi uchun) */
+      track.appendChild(el('div', { class: 'tl-dt', style: endedBefore || dp > 12 ? { right: 'calc(' + (100 - dp) + '% + 12px)' } : { left: 'calc(' + dp + '% + 12px)' }, text: fmtDate(dlISO) }));
+    }
+    /* 2) jarayon chizigʻi: ariza sanasi → bugun */
+    let ep = (nowPos != null && nowPos > ap) ? nowPos : ap + 0.8;
+    track.appendChild(el('div', { class: 'tl-bar', style: { left: ap + '%', width: Math.max(0.8, ep - ap) + '%', background: STATUS_COLOR.progress, opacity: '.6' } }));
+    const amk = el('button', { class: 'tl-mk', type: 'button', style: { left: ap + '%', background: STATUS_COLOR.progress }, 'aria-label': r.organizationName + ' — ' + t('st.progress') + ' ' + fmtDate(appISO) });
+    amk.addEventListener('click', () => openOrg(r.id));
+    attachTip(amk, () => `<b>${esc(r.organizationName)}</b>` + tipRows([
+      [t('c.status'), t('st.progress'), STATUS_COLOR.progress],
+      [t('c.app'), fmtDate(appISO)],
+      dlISO ? [t('c.deadline2'), fmtDate(dlISO)] : null,
+      [t('c.region'), tRegionShort(r.region)],
+      [t('c.owner'), tOwner(r.ownershipType)],
+      [t('c.risk'), r.riskScore + ' / 100']
+    ]));
+    track.appendChild(amk);
+    track.appendChild(el('div', {
+      class: 'tl-dt', style: { right: 'calc(' + (100 - ap) + '% + 12px)', color: STATUS_COLOR.progress, fontWeight: '600' },
+      text: t('st.progress') + ' ' + fmtDate(appISO)
+    }));
+    row.appendChild(track);
+    return row;
+  }
+
   if (!dlISO) {
     track.appendChild(el('div', { class: 'tl-off', style: { left: '6px' }, text: t('m.noDeadlineShort') }));
     row.appendChild(track);

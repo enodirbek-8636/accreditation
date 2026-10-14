@@ -494,6 +494,10 @@ table.tbl tr[data-flag="progress"] td:first-child{ box-shadow: inset 3px 0 0 var
   font-family:var(--font-mono); white-space:nowrap; color:var(--ink-2); pointer-events:none;
 }
 .tl-off{ position:absolute; top:50%; transform:translateY(-50%); font-size:10.5px; color:var(--ink-3); white-space:nowrap; }
+/* tugash sanasi — marker ustida, markazlangan (ranglar qoʻshilgan nuqta) */
+.tl-dt-top{ transform:translate(-50%,-150%); font-size:9.5px; background:var(--surface); padding:0 3px; border-radius:3px; line-height:1.2; z-index:2; }
+.tl-row{ min-height:34px; }
+.tl-track{ min-height:34px; }
 
 /* ---- year planner matrix ---- */
 .matrix{ border-collapse:separate; border-spacing:4px; width:100%; }
@@ -3103,43 +3107,48 @@ function tlRow(r, R, nowPos, yearCount) {
     const appISO = r.applicationDate;
     const appIn = appISO >= R.startISO && appISO <= R.endISO;
     const ap = appIn ? tlPos(appISO, R) : (appISO < R.startISO ? 0 : 100);
-    /* 1) avvalgi muddat (bor boʻlsa) */
+    const dp = dlISO ? (dlISO >= R.startISO && dlISO <= R.endISO ? tlPos(dlISO, R) : (dlISO < R.startISO ? 0 : 100)) : null;
+    /* muddat tugashi va jarayon boshlanishi kesishsa yoki juda yaqin boʻlsa — chiziqlar bir-biriga ulanadi */
+    const joined = dp != null && dp >= ap - 5;   // 5% ≈ 80px: yorliqlar sigʻmaydigan yaqinlik
+    const tipRowsFor = () => tipRows([
+      [t('c.status'), t('st.progress'), STATUS_COLOR.progress],
+      [t('c.app'), fmtDate(appISO)],
+      dlISO ? [t('c.deadline2'), fmtDate(dlISO)] : null,
+      dlISO ? [t('c.basis'), t('basis.' + r.deadlineBasis)] : null,
+      [t('c.region'), tRegionShort(r.region)],
+      [t('c.owner'), tOwner(r.ownershipType)],
+      [t('c.risk'), r.riskScore + ' / 100']
+    ]);
+    /* 1) avvalgi muddat (bor boʻlsa): qizil/kulrang chiziq, tugash sanasi markeri ustida */
     if (dlISO) {
-      const dp = dlISO >= R.startISO && dlISO <= R.endISO ? tlPos(dlISO, R) : (dlISO < R.startISO ? 0 : 100);
       const endedBefore = dlISO < appISO;
       const tone = endedBefore ? STATUS_COLOR.overdue : STATUS_COLOR.nodata;
       const anchor0 = r.reorganizationDate || r.accreditationDate || r.establishmentDate;
       let s0 = anchor0 ? tlPos(anchor0, R) : 0; if (s0 == null || s0 < 0) s0 = 0;
-      if (dp > s0) track.appendChild(el('div', { class: 'tl-bar', style: { left: s0 + '%', width: Math.max(0.6, dp - s0) + '%', background: tone } }));
+      if (dp > s0) track.appendChild(el('div', { class: 'tl-bar', style: { left: s0 + '%', width: Math.max(0.6, dp - s0) + '%', background: tone, borderRadius: joined ? '4px 0 0 4px' : '4px' } }));
       const dmk = el('button', { class: 'tl-mk', type: 'button', style: { left: dp + '%', background: tone }, 'aria-label': r.organizationName + ' — ' + fmtDate(dlISO) });
       dmk.addEventListener('click', () => openOrg(r.id));
-      attachTip(dmk, () => `<b>${esc(r.organizationName)}</b>` + tipRows([
-        [t('c.deadline2'), fmtDate(dlISO)],
-        [t('c.basis'), t('basis.' + r.deadlineBasis)],
-        [t('c.app'), fmtDate(appISO), STATUS_COLOR.progress]
-      ]));
+      attachTip(dmk, () => `<b>${esc(r.organizationName)}</b>` + tipRowsFor());
       track.appendChild(dmk);
-      /* tugash sanasi yorligʻi — markerdan chapda (keyingi "Jarayonda" yorligʻi bilan toʻqnashmasligi uchun) */
-      track.appendChild(el('div', { class: 'tl-dt', style: endedBefore || dp > 12 ? { right: 'calc(' + (100 - dp) + '% + 12px)' } : { left: 'calc(' + dp + '% + 12px)' }, text: fmtDate(dlISO) }));
+      /* tugash sanasi: ulangan boʻlsa — ranglar qoʻshilgan nuqta ustida; aks holda — avvalgidek marker yonida */
+      if (joined) track.appendChild(el('div', { class: 'tl-dt tl-dt-top', style: { left: dp + '%', color: tone }, text: fmtDate(dlISO) }));
+      else track.appendChild(el('div', { class: 'tl-dt', style: { left: 'calc(' + dp + '% + 12px)', color: tone }, text: fmtDate(dlISO) }));
     }
-    /* 2) jarayon chizigʻi: ariza sanasi → bugun */
-    let ep = (nowPos != null && nowPos > ap) ? nowPos : ap + 0.8;
-    track.appendChild(el('div', { class: 'tl-bar', style: { left: ap + '%', width: Math.max(0.8, ep - ap) + '%', background: STATUS_COLOR.progress, opacity: '.6' } }));
-    const amk = el('button', { class: 'tl-mk', type: 'button', style: { left: ap + '%', background: STATUS_COLOR.progress }, 'aria-label': r.organizationName + ' — ' + t('st.progress') + ' ' + fmtDate(appISO) });
-    amk.addEventListener('click', () => openOrg(r.id));
-    attachTip(amk, () => `<b>${esc(r.organizationName)}</b>` + tipRows([
-      [t('c.status'), t('st.progress'), STATUS_COLOR.progress],
-      [t('c.app'), fmtDate(appISO)],
-      dlISO ? [t('c.deadline2'), fmtDate(dlISO)] : null,
-      [t('c.region'), tRegionShort(r.region)],
-      [t('c.owner'), tOwner(r.ownershipType)],
-      [t('c.risk'), r.riskScore + ' / 100']
-    ]));
-    track.appendChild(amk);
-    track.appendChild(el('div', {
-      class: 'tl-dt', style: { right: 'calc(' + (100 - ap) + '% + 12px)', color: STATUS_COLOR.progress, fontWeight: '600' },
-      text: t('st.progress') + ' ' + fmtDate(appISO)
-    }));
+    /* 2) jarayon chizigʻi: (ulangan boʻlsa — tugash nuqtasidan, aks holda ariza sanasidan) → bugun */
+    const bs = joined ? dp : ap;
+    const ep = (nowPos != null && nowPos > bs) ? nowPos : bs + 0.8;
+    track.appendChild(el('div', { class: 'tl-bar', style: { left: bs + '%', width: Math.max(0.8, ep - bs) + '%', background: STATUS_COLOR.progress, opacity: '.6', borderRadius: joined ? '0 4px 4px 0' : '4px' } }));
+    if (!joined) {
+      const amk = el('button', { class: 'tl-mk', type: 'button', style: { left: ap + '%', background: STATUS_COLOR.progress }, 'aria-label': r.organizationName + ' — ' + t('st.progress') + ' ' + fmtDate(appISO) });
+      amk.addEventListener('click', () => openOrg(r.id));
+      attachTip(amk, () => `<b>${esc(r.organizationName)}</b>` + tipRowsFor());
+      track.appendChild(amk);
+    }
+    /* "Jarayonda {ariza sanasi}" — chiziq tugagandan keyin */
+    const lblStyle = ep <= 84
+      ? { left: 'calc(' + ep + '% + 10px)', color: STATUS_COLOR.progress }
+      : { left: ep + '%', transform: 'translate(-100%,-125%)', color: STATUS_COLOR.progress };
+    track.appendChild(el('div', { class: 'tl-dt', style: lblStyle, text: t('st.progress') + ' ' + fmtDate(appISO) }));
     row.appendChild(track);
     return row;
   }

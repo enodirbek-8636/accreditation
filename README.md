@@ -1,5 +1,5 @@
-# Давлат аккредитацияси мониторинги
+# Davlat akkreditatsiyasi monitoringi
 
-Давлат аккредитацияси ҳолати бўйича интерактив дашборд (02.09.2026 ҳолатига).
+Davlat akkreditatsiyasi holati boʻyicha interaktiv dashbord (14.10.2026 holatiga).
 
-Веб саҳифа: https://enodirbek-8636.github.io/accreditation/
+Veb sahifa: https://enodirbek-8636.github.io/accreditation/

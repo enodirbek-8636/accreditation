@@ -847,26 +847,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 
   <div class="section-title" id="ksec-terms">Muddatlar tahlili</div>
   <div class="panel" style="margin-bottom:18px">
-    <div class="schema-box" style="max-width:none;margin:0 0 16px;text-align:left">
-      ⏱ <b>Kompleks akkreditatsiya meʼyori:</b> ichki baholash tugashi → joyiga chiqish oraligʻi <b>60–65 kun</b> boʻlishi kerak · joyiga chiqish sanasidan <b>15–20 kundan</b> ortiq vaqt oʻtib taʼlim tashkilotining kompleks davlat akkreditatsiyasi yakunlanmasa — <b>kritik</b> holat sifatida belgilanadi.
-    </div>
-    <div class="kpi-grid" id="kTermKpi"></div>
-  </div>
-  <div class="grid-2">
-    <div class="panel"><div class="panel-head"><div><h3>Ichki baholash → joyiga chiqish oraligʻi</h3><div class="pdesc">◆ amaldagi · ◯ rejadagi oraliq · yashil tasma — meʼyor (60–65)</div></div>
-      <button class="mini-btn" data-png="kGapChart">PNG</button></div>
-      <div class="chart tall" id="kGapChart"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Kechikish holati</h3><div class="pdesc">Hisobot sanasiga nisbatan</div></div></div>
-      <div class="chart tall" id="kOverdueChart"></div></div>
-  </div>
-  <div class="panel" style="margin-bottom:18px">
-    <div class="panel-head"><div><h3>Muddat taqsimoti — meʼyor bajarilishi</h3><div class="pdesc">Ichki baholash → joyiga chiqish oraligʻi · meʼyor 60–65 kun</div></div>
-      <button class="mini-btn" data-png="kGapHist">PNG</button></div>
-    <div class="norm-summary" id="kGapSummary"></div>
-    <div class="norm-strip" id="kNormStrip"></div>
-    <div class="chart" id="kGapHist" style="height:290px"></div>
-  </div>
-  <div class="panel" style="margin-bottom:18px">
     <div class="panel-head"><div><h3>Jarayon timeline</h3><div class="pdesc">Ariza → qabul → ichki baholash → ekspert → joyiga chiqish · punktir: hisobot sanasi</div></div>
       <button class="mini-btn" data-png="kGantt">PNG</button></div>
     <div class="chart" id="kGantt" style="height:560px"></div>
@@ -2626,7 +2606,7 @@ function kRenderKPI(){
   const g2=l.filter(r=>kReached(r.iDate)).map(r=>daysBetween(r.aDate,r.iDate));
   const gAct=l.filter(r=>kGapKind(r)==='actual').map(kGap);
   const gPln=l.filter(r=>kGapKind(r)==='planned').map(kGap);
-  $('#kTermKpi').innerHTML = [
+  if($('#kTermKpi')) $('#kTermKpi').innerHTML = [   // muddat KPI kartalari platformadan olib tashlangan
     {label:'Oʻrtacha ariza→qabul',v:kAvg(g1),ic:'clock',col:'--c-primary-2',sfx:' kun'},
     {label:'Oʻrtacha qabul→ichki baholash',v:kAvg(g2),ic:'clock',col:'--c-progress',sfx:' kun'},
     {label:'Oʻrtacha baholash→tashrif',v:kAvg(gaps),ic:'clock',
@@ -2738,7 +2718,8 @@ function kRenderCharts(){
   charts.kCoordChart.on('mouseout',hideInfoTip);
   charts.kCoordChart.on('click',p=>{const nm=kCoordCats[p.dataIndex]; const s=nm?staffByName(nm):null;
     if(s){ switchMode('xodim'); setTimeout(()=>hOpenModal(s.key),240); }});
-  // ----- Muddat taqsimoti: meʼyor bajarilishi (gorizontal, foizli) -----
+  // ----- Muddat taqsimoti: meʼyor bajarilishi (gorizontal, foizli) — platformadan olib tashlangan, element boʻlsa chiziladi -----
+  if(charts.kGapHist){
   const gv = l.map(kGap).filter(x=>x!==null);
   const nTot = gv.length || 1;
   const nShort = gv.filter(x=>x<K_NORM_MIN).length;
@@ -2802,7 +2783,9 @@ function kRenderCharts(){
     kState.gap = (kState.gap===b.cat) ? '' : b.cat;   // qayta bosilsa — filtr olib tashlanadi
     kState.page=1; kSyncUI(); kRenderSection();
     document.querySelector('#kTable').scrollIntoView({behavior:'smooth',block:'center'});});
+  }
   // oraliq scatter
+  if(charts.kGapChart){
   const g=l.filter(r=>kGap(r)!==null).sort((a,b)=>kGap(a)-kGap(b));
   charts.kGapChart.setOption({textStyle:baseTextStyle(),
     grid:{left:8,right:18,top:24,bottom:30,containLabel:true},
@@ -2820,7 +2803,9 @@ function kRenderCharts(){
       markLine:{silent:true,symbol:'none',lineStyle:{color:cssVar('--c-passed'),type:'dashed'},
         data:[{yAxis:K_NORM_MIN,label:{formatter:'60',color:cssVar('--c-text-2')}},{yAxis:K_NORM_MAX,label:{formatter:'65',color:cssVar('--c-text-2')}}]}}]},true);
   charts.kGapChart.off('click'); charts.kGapChart.on('click',p=>{if(p.data&&p.data._r)kOpenModal(p.data._r.app);});
+  }
   // kechikish
+  if(charts.kOverdueChart){
   const b={nodate:0,upcoming:0,window:0,warn:0,crit:0};
   l.forEach(r=>b[kOverdue(r).k]++);
   const map=[{k:'crit',n:'Kritik (>20 kun)',c:'--c-failed'},{k:'warn',n:'Ogohlantirish (15–20)',c:'#f97316'},
@@ -2833,6 +2818,7 @@ function kRenderCharts(){
     yAxis:{type:'category',data:map.map(x=>x.n).reverse(),axisLabel:{color:cssVar('--c-text-2'),fontSize:11},axisLine:{lineStyle:{color:cssVar('--border')}}},
     series:[{type:'bar',barWidth:'58%',label:{show:true,position:'right',color:cssVar('--c-text'),fontWeight:'bold'},
       data:map.map(x=>({value:b[x.k],itemStyle:{color:colOf(x.c),borderRadius:[0,4,4,0]}})).reverse()}]},true);
+  }
   // gantt
   const gl=l.filter(r=>r.cDate).sort((a,b2)=>new Date(a.cDate)-new Date(b2.cDate));
   const refTs=new Date(kState.refDate+'T00:00:00').getTime();

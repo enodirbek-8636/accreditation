@@ -650,14 +650,10 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
   <div class="panel">
     <div class="panel-head"><div><h3>Tanlangan koordinator</h3><div class="pdesc">Umumiy natijadorlik balli</div></div></div>
     <div class="chart" id="gaugeChart" style="height:250px"></div>
-    <div class="panel-head" style="margin-top:6px"><div><h3>Arizalar holati</h3></div></div>
-    <div class="chart short" id="appDonut" style="height:200px"></div>
   </div>
   <div class="panel">
     <div class="panel-head"><div><h3>Dasturlar holati</h3><div class="pdesc">Umumiy taqsimot</div></div></div>
     <div class="chart" id="progDonut" style="height:250px"></div>
-    <div class="panel-head" style="margin-top:6px"><div><h3>Xavf xaritasi</h3></div></div>
-    <div class="chart short" id="riskMap" style="height:200px"></div>
   </div>
 </div>
 
@@ -685,7 +681,7 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="chart" id="eduChart" style="height:300px"></div>
   </div>
   <div class="panel">
-    <div class="panel-head"><div><h3>Egalik shakli boʻyicha</h3><div class="pdesc">Davlat · nodavlat · xorijiy</div></div></div>
+    <div class="panel-head"><div><h3>Mulkchilik shakli boʻyicha</h3><div class="pdesc">Davlat · nodavlat · xorijiy</div></div></div>
     <div class="chart" id="ownChart" style="height:300px"></div>
   </div>
   <div class="panel">
@@ -700,7 +696,7 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="chart tall" id="fieldChart"></div>
   </div>
   <div class="panel">
-    <div class="panel-head"><div><h3>Komissiya sessiyalari boʻyicha qarorlar</h3><div class="pdesc">Har bir majlisda oʻtgan va oʻtmagan dasturlar</div></div></div>
+    <div class="panel-head"><div><h3>Akkreditatsiya komissiya bayonlari boʻyicha</h3><div class="pdesc">Har bir majlisda oʻtgan va oʻtmagan dasturlar</div></div></div>
     <div class="chart tall" id="sessionChart"></div>
   </div>
 </div>
@@ -726,9 +722,8 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="btn-clear" id="aClear">✕ Tozalash</button>
     <div class="refdate-note">Meʼyor: ichki baholash → joyiga chiqish oraligʻi <b>30–40 kun</b> · joyiga chiqishdan <b>15–20+ kun</b> oʻtib tugamasa — kritik</div>
   </div>
-  <div class="kpi-grid" id="appKpi"></div>
 </div>
-<div class="grid-2">
+<div class="grid-2" style="grid-template-columns:1fr">
   <div class="panel">
     <div class="panel-head"><div><h3>Ichki baholash → joyiga chiqish oraligʻi</h3><div class="pdesc">Har bir ariza (kun) · yashil chiziq — meʼyor (30–40)</div></div>
       <button class="mini-btn" data-png="gapChart">PNG</button></div>
@@ -738,10 +733,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
       <span><i style="background:var(--c-passed)"></i>Meʼyorda (30–40 kun)</span>
       <span><i style="background:var(--c-failed)"></i>Uzoq (&gt;40 kun)</span>
     </div>
-  </div>
-  <div class="panel">
-    <div class="panel-head"><div><h3>Kechikkan arizalar taqsimoti</h3><div class="pdesc">Joyiga chiqishdan keyingi holat (hisobot sanasiga nisbatan)</div></div></div>
-    <div class="chart tall" id="overdueChart"></div>
   </div>
 </div>
 <div class="panel" style="margin-bottom:18px">
@@ -859,7 +850,7 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
   <div class="grid-2">
     <div class="panel"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha</h3><div class="pdesc">Bosqichlar kesimida</div></div></div>
       <div class="chart" id="kEduChart" style="height:300px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Egalik shakli boʻyicha</h3><div class="pdesc">Davlat · nodavlat · xorijiy</div></div></div>
+    <div class="panel"><div class="panel-head"><div><h3>Mulkchilik shakli boʻyicha</h3><div class="pdesc">Davlat · nodavlat · xorijiy</div></div></div>
       <div class="chart" id="kOwnChart" style="height:300px"></div></div>
   </div>
   <div class="panel" style="margin-bottom:18px">
@@ -1250,7 +1241,9 @@ let charts = {};
 function initCharts(){
   ['stackChart','gaugeChart','appDonut','progDonut','riskMap','bubbleChart','eduChart','ownChart','lvlChart','fieldChart','sessionChart','heiChart','gapChart','overdueChart','ganttChart','kStageChart','kVisitMonthChart','kEduChart','kOwnChart','kCoordChart','kGapChart','kGapHist','kOverdueChart','kGantt','hLoadChart','hScatter','hCritChart','hRankChart','hCatChart','hCompareChart','gLoadChart','gRadarChart','gScoreChart'].forEach(id=>{
     if(charts[id]){ charts[id].dispose(); }
-    charts[id] = echarts.init($('#'+id));
+    const el = $('#'+id);
+    if(!el){ delete charts[id]; return; }   // platformadan olib tashlangan diagramma
+    charts[id] = echarts.init(el);
   });
 }
 function baseTextStyle(){ return {color:cssVar('--c-text'), fontFamily:'Inter, Arial, sans-serif'}; }
@@ -1304,6 +1297,7 @@ function renderGauge(m){
   }, true);
 }
 function renderAppDonut(m){
+  if(!charts.appDonut) return;   // diagramma platformadan olib tashlangan
   const src = m || totalsMetric();
   charts.appDonut.setOption({
     textStyle:baseTextStyle(), tooltip:{trigger:'item',...tipBox()},
@@ -1353,6 +1347,7 @@ function renderBubble(list){
   charts.bubbleChart.on('click',p=>openSidePanel(p.data.id));
 }
 function renderRiskMap(){
+  if(!charts.riskMap) return;   // diagramma platformadan olib tashlangan
   const q = [0,0,0,0];
   METRICS.filter(m=>m.hasLoad).forEach(m=>{
     const highLoad = m.workloadIndex >= 50, highLag = m.lagIndex >= 40;
@@ -2277,6 +2272,7 @@ function filteredApps(){
 
 /* --- KPI --- */
 function renderAppKPI(){
+  if(!$('#appKpi')) return;   // KPI kartalari platformadan olib tashlangan
   const list = filteredApps();
   const withGap = list.map(appGap).filter(g=>g!==null);
   const avgGap = withGap.length ? withGap.reduce((s,g)=>s+g,0)/withGap.length : 0;
@@ -2327,6 +2323,7 @@ function renderGapChart(){
 
 /* --- overdue distribution --- */
 function renderOverdueChart(){
+  if(!charts.overdueChart) return;   // diagramma platformadan olib tashlangan
   const list = filteredApps();
   const buckets={done:0,upcoming:0,window:0,warn:0,crit:0,nodate:0};
   list.forEach(a=>buckets[overdueStatus(a).k]++);
@@ -4519,7 +4516,7 @@ function reportKompleks(){
 
   x += docH('2.1. Umumiy koʻrsatkichlar', 2);
   x += docP(`Kompleks davlat akkreditatsiyasi yoʻnalishida jami ${n} ta ariza qayd etilgan boʻlib, ular ${new Set(l.map(r=>r.hei)).size} ta taʼlim tashkilotiga tegishli. Hisobot sanasi — ${fmtDate(ref)}. Arizalarning jarayondagi holati bosqichma-bosqich tahlil qilindi, bunda har bir bosqich sanasi hisobot sanasiga yetib kelgani asosida hisoblandi — kelajakdagi rejalashtirilgan sanalar tugallangan deb hisoblanmadi.`);
-  x += docP(`Egalik shakli boʻyicha taqsimot: davlat tashkilotlari — ${own['Davlat']||0} ta, nodavlat — ${own['Nodavlat']||0} ta, xorijiy — ${own['Xorijiy']||0} ta. Ushbu taqsimot yoʻnalishda davlat taʼlim tashkilotlari ustunligini koʻrsatadi.`);
+  x += docP(`Mulkchilik shakli boʻyicha taqsimot: davlat tashkilotlari — ${own['Davlat']||0} ta, nodavlat — ${own['Nodavlat']||0} ta, xorijiy — ${own['Xorijiy']||0} ta. Ushbu taqsimot yoʻnalishda davlat taʼlim tashkilotlari ustunligini koʻrsatadi.`);
 
   x += docH('2.2. Jarayon bosqichlari', 2);
   x += docP(`Arizalarning jarayondagi taqsimoti quyidagicha: ariza berilgan — ${st.submitted} ta, qabul qilingan — ${st.accepted} ta, ichki baholash jarayonida — ${st.assessing} ta, ichki baholash tugagan — ${st.assessed} ta, ekspert biriktirilgan — ${st.expert} ta. Bosqichma-bosqich oʻtish koʻrsatkichi (voronka) shuni koʻrsatadiki, ${n} ta arizadan ${acc} tasi (${_pct(safeDiv(acc,n)*100)}) qabul bosqichidan oʻtgan, ${ass} tasida (${_pct(safeDiv(ass,n)*100)}) ichki baholash toʻliq yakunlangan, ${vis} tasida (${_pct(safeDiv(vis,n)*100)}) joyiga chiqish amalga oshirilgan.`);

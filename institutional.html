@@ -2930,10 +2930,10 @@ function viewOwners(root) {
 /* ==========================================================================
    AKKREDITATSIYA GRAFIGI — interaktiv Gantt uslubidagi tarmoq timeline (§10–12)
    ========================================================================== */
+const TL_DEFAULT_FROM = 2020, TL_DEFAULT_TO = 2030;   // standart koʻrinish: 2020–2030
 function tlRange() {
-  const cy = +MODEL.today.slice(0, 4);
-  const from = STATE.timeline.from || (cy - 1);
-  const to = STATE.timeline.to || (cy + 4);
+  const from = STATE.timeline.from || TL_DEFAULT_FROM;
+  const to = STATE.timeline.to || TL_DEFAULT_TO;
   return { from, to, startISO: from + '-01-01', endISO: to + '-12-31' };
 }
 function tlPos(iso, R) {
@@ -3009,7 +3009,7 @@ function viewTimeline(root) {
   /* ---- the chart ---- */
   const cardBox = el('div', { class: 'card' });
   const wrap = el('div', { class: 'tl-wrap' });
-  const inner = el('div', { class: 'tl-inner' });
+  const inner = el('div', { class: 'tl-inner', style: { minWidth: Math.max(940, (R.to - R.from + 1) * 150) + 'px' } });   // har bir yil uchun kamida 150px
 
   /* axis */
   const axis = el('div', { class: 'tl-axis' });

@@ -367,6 +367,10 @@ input[type=range]{width:100%;accent-color:var(--c-primary-2)}
 .mode-switch{display:flex;flex-direction:column;gap:4px;background:var(--c-card);border:1px solid var(--border);
   border-radius:14px;padding:8px;box-shadow:var(--shadow)}
 .mode-group{display:flex;flex-direction:column}
+.mode-group.no-sub .mode-btn::after{display:none}
+/* embed: institutsional monitoring sahifalari */
+.embed-frame{display:block;width:100%;height:calc(100vh - 36px);min-height:640px;border:1px solid var(--border);
+  border-radius:var(--radius);background:var(--c-card);box-shadow:var(--shadow)}
 .mode-btn{width:100%;padding:12px 14px;border-radius:11px;border:1px solid transparent;background:transparent;
   font-size:14px;font-weight:700;color:var(--c-text-2);cursor:pointer;transition:.22s;
   display:flex;align-items:center;justify-content:flex-start;gap:10px;text-align:left;line-height:1.3}
@@ -579,6 +583,18 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="nav-item" data-target="hsec-photos"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></span>Rasmlar</button>
     <button class="nav-item" data-target="hsec-registry"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>Xodimlar reyestri</button>
   </nav>
+  </div>
+  <div class="mode-group no-sub" data-mode="tashkilot">
+  <button class="mode-btn" data-mode="tashkilot" role="tab" aria-selected="false">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 10h16M5 10v11M19 10v11M9 10v11M15 10v11M12 3 3 7.5h18L12 3Z"/></svg>
+    Taʼlim tashkilotlari
+  </button>
+  </div>
+  <div class="mode-group no-sub" data-mode="grafik">
+  <button class="mode-btn" data-mode="grafik" role="tab" aria-selected="false">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+    Akkreditatsiya grafigi
+  </button>
   </div>
 </div>
 </aside>
@@ -987,6 +1003,19 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     </div>
   </div>
 </div><!-- /modeXodim -->
+
+<!-- ============================================================
+     TAʼLIM TASHKILOTLARI va AKKREDITATSIYA GRAFIGI — institutsional
+     akkreditatsiya monitoringi (institutional.html) embed rejimida
+     ============================================================ -->
+<div id="modeTashkilot" style="display:none">
+  <iframe class="embed-frame" id="frameTashkilot" title="Taʼlim tashkilotlari"
+    data-src="institutional.html?embed=1&page=orgs&lang=ul"></iframe>
+</div>
+<div id="modeGrafik" style="display:none">
+  <iframe class="embed-frame" id="frameGrafik" title="Akkreditatsiya grafigi"
+    data-src="institutional.html?embed=1&page=timeline&lang=ul"></iframe>
+</div>
 </main>
 </div><!-- /app-layout -->
 
@@ -1865,6 +1894,7 @@ function applyTheme(){
   $('#themeIcon').innerHTML = state.theme==='dark'
     ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>'
     : '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+  if(typeof postEmbedTheme==='function') postEmbedTheme();
   setTimeout(()=>{
     initCharts();
     // faqat faol rejim qayta chiziladi; ikkinchisi rejim almashganda chiziladi
@@ -3009,15 +3039,26 @@ function kExportCSV(){
 function kRenderSection(){ kRenderKPI(); kRenderCharts(); kRenderCrit(); kRenderTable(); }
 
 /* ============ 27. REJIMLARNI ALMASHTIRISH ============ */
+const MODE_PANELS = {maxsus:'#modeMaxsus', kompleks:'#modeKompleks', xodim:'#modeXodim', tashkilot:'#modeTashkilot', grafik:'#modeGrafik'};
+const EMBED_MODES = {tashkilot:'#frameTashkilot', grafik:'#frameGrafik'};
+// embed iframe'lar: faqat birinchi ochilganda yuklanadi, mavzu asosiy platforma bilan sinxron
+function loadEmbed(m){
+  const f = EMBED_MODES[m] && $(EMBED_MODES[m]);
+  if(!f) return;
+  if(!f.src){ f.src = f.dataset.src + '&theme=' + (state.theme==='dark'?'dark':'light'); }
+  else postEmbedTheme();
+}
+function postEmbedTheme(){
+  Object.values(EMBED_MODES).forEach(sel=>{ const f=$(sel); if(f && f.src && f.contentWindow) f.contentWindow.postMessage({theme: state.theme==='dark'?'dark':'light'}, '*'); });
+}
 function switchMode(m){
   state.mode = m; saveState();
-  $('#modeMaxsus').style.display = m==='maxsus' ? '' : 'none';
-  $('#modeKompleks').style.display = m==='kompleks' ? '' : 'none';
-  $('#modeXodim').style.display = m==='xodim' ? '' : 'none';
+  Object.entries(MODE_PANELS).forEach(([k,sel])=>{ const p=$(sel); if(p) p.style.display = k===m ? '' : 'none'; });
   $$('.mode-btn').forEach(b=>{const on=b.dataset.mode===m;b.classList.toggle('active',on);b.setAttribute('aria-selected',on);});
   // faqat faol asosiy boʻlimning ichki boʻlimlari ochiladi
   $$('.mode-group').forEach(g=>g.classList.toggle('open', g.dataset.mode===m));
   window.scrollTo({top:0,behavior:'auto'});
+  if(EMBED_MODES[m]){ loadEmbed(m); return; }
   setTimeout(()=>{
     Object.values(charts).forEach(c=>c&&c.resize());
     if(m==='kompleks') kRenderSection();
@@ -3027,7 +3068,7 @@ function switchMode(m){
 }
 function initModeSwitch(){
   $$('.mode-btn').forEach(b=>b.onclick=()=>switchMode(b.dataset.mode));
-  switchMode(['kompleks','xodim'].includes(state.mode)?state.mode:'maxsus');
+  switchMode(MODE_PANELS[state.mode] ? state.mode : 'maxsus');
 }
 
 

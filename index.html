@@ -549,7 +549,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
   <nav class="section-nav" id="sectionNav" aria-label="Boʻlimlar navigatsiyasi">
   <button class="nav-item active" data-target="sec-top"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg></span>Umumiy koʻrsatkichlar</button>
   <button class="nav-item" data-target="sec-main"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></span>Asosiy koʻrsatkichlar</button>
-  <button class="nav-item" data-target="sec-dims"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M8 17V9M13 17V5M18 17v-6"/></svg></span>Kesimlar tahlili</button>
   <button class="nav-item" data-target="sec-apps"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v3M16 2v3M3 8h18M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/><path d="M9 14l2 2 4-4"/></svg></span>Arizalar tahlili</button>
   <button class="nav-item" data-target="sec-registry"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>Dasturlar reyestri</button>
   <button class="nav-item" data-target="sec-table"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg></span>Batafsil jadval</button>
@@ -639,71 +638,58 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 
 <!-- ===================== CHARTS ROW 1 ===================== -->
 <div class="section-title" id="sec-main">Asosiy koʻrsatkichlar tahlili</div>
+<!-- 1–3: Dasturlar holati · Mulkchilik shakli · Taʼlim turi -->
 <div class="grid-3">
-  <div class="panel">
-    <div class="panel-head">
-      <div><h3>Koordinatorlar boʻyicha dasturlar holati</h3><div class="pdesc">Ish hajmi boʻyicha saralangan (jarayonda · oʻtgan · oʻtmagan)</div></div>
-      <button class="mini-btn" data-png="stackChart"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>PNG</button>
-    </div>
-    <div class="chart tall" id="stackChart"></div>
-  </div>
-  <div class="panel">
-    <div class="panel-head"><div><h3>Tanlangan koordinator</h3><div class="pdesc">Umumiy natijadorlik balli</div></div></div>
-    <div class="chart" id="gaugeChart" style="height:250px"></div>
-  </div>
   <div class="panel">
     <div class="panel-head"><div><h3>Dasturlar holati</h3><div class="pdesc">Umumiy taqsimot</div></div></div>
-    <div class="chart" id="progDonut" style="height:250px"></div>
-  </div>
-</div>
-
-<!-- ===================== CHARTS ROW 2 ===================== -->
-<div class="grid-2">
-  <div class="panel">
-    <div class="panel-head">
-      <div><h3>Ish hajmi va natijadorlik</h3><div class="pdesc">X: dasturlar soni · Y: bajarilish % · oʻlcham: ish hajmi · rang: ball</div></div>
-      <button class="mini-btn" data-png="bubbleChart"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>PNG</button>
-    </div>
-    <div class="chart tall" id="bubbleChart"></div>
-  </div>
-  <div class="panel">
-    <div class="panel-head"><div><h3>Koordinatorlar reytingi</h3><div class="pdesc">Natijadorlik balli boʻyicha</div></div></div>
-    <div class="rank-list" id="rankList"></div>
-  </div>
-</div>
-
-<!-- ===================== DIMENSION ANALYTICS ===================== -->
-<div class="section-title" id="sec-dims">Kesimlar boʻyicha tahlil</div>
-<div class="grid-3">
-  <div class="panel">
-    <div class="panel-head"><div><h3>Taʼlim turi boʻyicha</h3><div class="pdesc">Holat boʻyicha taqsimot</div></div>
-      <button class="mini-btn" data-png="eduChart">PNG</button></div>
-    <div class="chart" id="eduChart" style="height:300px"></div>
+    <div class="chart" id="progDonut" style="height:300px"></div>
   </div>
   <div class="panel">
     <div class="panel-head"><div><h3>Mulkchilik shakli boʻyicha</h3><div class="pdesc">Davlat · nodavlat · xorijiy</div></div></div>
     <div class="chart" id="ownChart" style="height:300px"></div>
   </div>
   <div class="panel">
-    <div class="panel-head"><div><h3>Taʼlim darajasi boʻyicha</h3><div class="pdesc">Bakalavr · magistr · doktor va b.</div></div></div>
-    <div class="chart" id="lvlChart" style="height:300px"></div>
+    <div class="panel-head"><div><h3>Taʼlim turi boʻyicha</h3><div class="pdesc">Holat boʻyicha taqsimot</div></div>
+      <button class="mini-btn" data-png="eduChart">PNG</button></div>
+    <div class="chart" id="eduChart" style="height:300px"></div>
   </div>
 </div>
+<!-- 4–5: Taʼlim darajasi · Bilim sohalari -->
 <div class="grid-2">
+  <div class="panel">
+    <div class="panel-head"><div><h3>Taʼlim darajasi boʻyicha</h3><div class="pdesc">Bakalavr · magistr · doktor va b.</div></div></div>
+    <div class="chart tall" id="lvlChart"></div>
+  </div>
   <div class="panel">
     <div class="panel-head"><div><h3>Bilim sohalari boʻyicha</h3><div class="pdesc">Holat boʻyicha stek · segmentga bosib filtrlang</div></div>
       <button class="mini-btn" data-png="fieldChart">PNG</button></div>
     <div class="chart tall" id="fieldChart"></div>
   </div>
-  <div class="panel">
-    <div class="panel-head"><div><h3>Akkreditatsiya komissiya bayonlari boʻyicha</h3><div class="pdesc">Har bir majlisda oʻtgan va oʻtmagan dasturlar</div></div></div>
-    <div class="chart tall" id="sessionChart"></div>
-  </div>
 </div>
+<!-- 6: Akkreditatsiya komissiya bayonlari -->
 <div class="panel" style="margin-bottom:18px">
-  <div class="panel-head"><div><h3>Eng koʻp dastur kiritgan taʼlim muassasalari (TOP-15)</h3><div class="pdesc">Holat boʻyicha stek · jami 89 muassasa</div></div>
+  <div class="panel-head"><div><h3>Akkreditatsiya komissiya bayonlari boʻyicha</h3><div class="pdesc">Har bir majlisda oʻtgan va oʻtmagan dasturlar</div></div>
+    <button class="mini-btn" data-png="sessionChart">PNG</button></div>
+  <div class="chart tall" id="sessionChart"></div>
+</div>
+<!-- 7: TOP-15 muassasalar -->
+<div class="panel" style="margin-bottom:18px">
+  <div class="panel-head"><div><h3>Eng koʻp dastur kiritgan taʼlim muassasalari (TOP-15)</h3><div class="pdesc">Holat boʻyicha stek · jami <span id="heiCount">—</span> muassasa</div></div>
     <button class="mini-btn" data-png="heiChart">PNG</button></div>
   <div class="chart" id="heiChart" style="height:520px"></div>
+</div>
+<!-- 8: Koordinatorlar boʻyicha dasturlar holati -->
+<div class="panel" style="margin-bottom:18px">
+  <div class="panel-head">
+    <div><h3>Koordinatorlar boʻyicha dasturlar holati</h3><div class="pdesc">Ish hajmi boʻyicha saralangan (jarayonda · oʻtgan · oʻtmagan)</div></div>
+    <button class="mini-btn" data-png="stackChart"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>PNG</button>
+  </div>
+  <div class="chart tall" id="stackChart"></div>
+</div>
+<!-- 9: Koordinatorlar reytingi -->
+<div class="panel" style="margin-bottom:18px">
+  <div class="panel-head"><div><h3>Koordinatorlar reytingi</h3><div class="pdesc">Natijadorlik balli boʻyicha</div></div></div>
+  <div class="rank-list" id="rankList"></div>
 </div>
 
 <!-- ===================== PROGRAM DRILL-DOWN ===================== -->
@@ -1276,6 +1262,7 @@ function renderStackChart(list){
   charts.stackChart.on('click', p=>{ const m=data[p.dataIndex]; if(m) openSidePanel(m.id); });
 }
 function renderGauge(m){
+  if(!charts.gaugeChart) return;   // diagramma platformadan olib tashlangan
   const score = m && m.hasLoad ? m.performanceScore : 0;
   const cat = m ? category(m) : {label:'—'};
   const col = scoreColor(m&&m.hasLoad?score:null);
@@ -1327,6 +1314,7 @@ function renderProgDonut(m){
   }, true);
 }
 function renderBubble(list){
+  if(!charts.bubbleChart) return;   // diagramma platformadan olib tashlangan
   const data = list.filter(m=>m.hasLoad).map(m=>({
     value:[m.progTotal, +m.programCompletionRate.toFixed(1), m.workloadIndex, m.performanceScore],
     name:m.coordinator, id:m.id, itemStyle:{color:scoreColor(m.performanceScore)}
@@ -4699,6 +4687,7 @@ function init(){
   loadPhotoStore();
   phBindEvents();
   bindReportEvents();
+  const heiCountEl = $('#heiCount'); if(heiCountEl) heiCountEl.textContent = new Set(PROGRAMS.map(p=>p.hei)).size;
   initSectionNav();
   initSectionNav('sectionNavK');
   initSectionNav('sectionNavH');

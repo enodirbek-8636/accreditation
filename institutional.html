@@ -1581,7 +1581,7 @@ const STATE = {
   today: todayISO(),
   source: 'embedded',
   sourceName: '',
-  table: { sort: 'deadline', dir: 'asc', page: 1, size: 25, cols: null },
+  table: { sort: 'region', dir: 'asc', page: 1, size: 25, cols: null },   // standart tartib: hududlar ketma-ketligi
   timeline: { group: 'region', from: null, to: null, collapsed: {}, limit: 1200 },
   certSort: { key: 'certValid', dir: 'asc' },
   calYear: null,
@@ -2384,7 +2384,8 @@ function setFilterAndGo(key, value, page) {
 const COLS = [
   { k: 'n', label: () => '№', cls: 'num', get: (r, i) => String(i + 1), sort: null, fixed: true },
   { k: 'name', label: () => t('c.org'), cls: 'name', get: r => r.organizationName, sort: r => r.organizationName.toLowerCase(), fixed: true },
-  { k: 'region', label: () => t('c.region'), get: r => tRegionShort(r.region), sort: r => tRegion(r.region) },
+  /* hudud boʻyicha saralash — buyurtmachi belgilagan ketma-ketlik (TL_REGION_ORDER), hudud ichida T/r boʻyicha */
+  { k: 'region', label: () => t('c.region'), get: r => tRegionShort(r.region), sort: r => { const i = TL_REGION_ORDER.indexOf(r.region); return String(i < 0 ? 99 : i).padStart(2, '0') + '-' + String(r.id).padStart(6, '0'); } },
   { k: 'owner', label: () => t('c.owner'), get: r => tOwner(r.ownershipType), sort: r => tOwner(r.ownershipType) },
   { k: 'level', label: () => t('c.level'), get: r => tLevel(r.educationLevel), sort: r => tLevel(r.educationLevel) },
   { k: 'est', label: () => t('c.est'), cls: 'mono', get: r => fmtDate(r.establishmentDate), sort: r => r.establishmentDate || '' },

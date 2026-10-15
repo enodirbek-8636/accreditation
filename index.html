@@ -5169,9 +5169,28 @@ function dbRenderB(D){
 /* ---- C ---- */
 function dbRenderC(D){
   const I = D.I, C=DB_C();
-  const eduKeys = DB_EDU.map(e=>e.k).concat(I.some(r=>r.edu==='other')?['other']:[]);
+  const eduKeys = DB_EDU.map(e=>e.k).concat(I.some(r=>r.edu==='other')?['other']:[]).filter(k=>I.some(r=>r.edu===k));
   const eduVals = eduKeys.map(k=>dbCount(I,r=>r.edu===k));
-  dbHBar('dbC1', eduKeys.map(DB_EDU_LABEL), eduVals, eduKeys.map((k,i)=>[C.primary,C.primary2,'#84cc16',C.yellow,C.orange,C.neutral][i%6]), I.length, 'ta tashkilot', name=>{ const e=DB_EDU.find(x=>x.label===name); if(e) dbSet('edu',e.k); });
+  /* C1: taʼlim turi × mulkchilik (stek), oxirida jami va ulush */
+  {
+    const owns = DB_OWN.concat(I.some(r=>r.own==='Aniqlanmagan')?['Aniqlanmagan']:[]);
+    const ownCol = {Davlat:C.primary, Nodavlat:C.primary2, Xorijiy:C.orange, Aniqlanmagan:C.neutral};
+    const cats = eduKeys.map(DB_EDU_LABEL).reverse(), vals = eduVals.slice().reverse(), keys = eduKeys.slice().reverse();
+    const c = dbChart('dbC1', {
+      grid:{left:8,right:96,top:30,bottom:8,containLabel:true},
+      tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox(),formatter:ps=>{const i=ps[0].dataIndex, tot=vals[i]; return `<b>${cats[i]}</b><br/>`+ps.filter(p=>p.seriesName!=='_t'&&p.value).map(p=>`${p.marker}${p.seriesName}: <b>${fmtNum(p.value)}</b> (${fmtPct(dbPct(p.value,tot))})`).join('<br/>')+`<br/>Jami: <b>${fmtNum(tot)}</b> ta tashkilot · ${fmtPct(dbPct(tot,I.length))}`;}},
+      legend:{top:0,textStyle:{color:C.text2,fontSize:11},itemWidth:10,itemHeight:10,data:owns},
+      xAxis:{type:'value',...axisStyle(),axisLabel:{show:false},splitLine:{show:false}},
+      yAxis:{type:'category',data:cats,axisLabel:{color:C.text2,fontSize:12},axisLine:{lineStyle:{color:cssVar('--border')}},axisTick:{show:false}},
+      series:owns.map(o=>({name:o,type:'bar',stack:'t',barWidth:'58%',itemStyle:{color:ownCol[o]},emphasis:{focus:'series'},
+          label:{show:true,color:'#fff',fontSize:10.5,fontWeight:'bold',formatter:p=>p.value>=Math.max(8,I.length*0.012)?fmtNum(p.value):''},
+          data:keys.map(k=>dbCount(I,r=>r.edu===k&&r.own===o))}))
+        .concat([{name:'_t',type:'bar',stack:'t',silent:true,itemStyle:{color:'transparent'},tooltip:{show:false},
+          label:{show:true,position:'right',color:cssVar('--c-text'),fontWeight:'bold',fontSize:12,formatter:p=>`${fmtNum(vals[p.dataIndex])} · ${fmtPct(dbPct(vals[p.dataIndex],I.length))}`},
+          data:keys.map(()=>0)}])
+    });
+    if(c){ c.off('click'); c.on('click',p=>{ const e=DB_EDU.find(x=>x.label===cats[p.dataIndex]); if(e) dbSet('edu',e.k); }); }
+  }
   const ownItems = DB_OWN.concat(I.some(r=>r.own==='Aniqlanmagan')?['Aniqlanmagan']:[]).map((o,i)=>({name:o,value:dbCount(I,r=>r.own===o),color:[C.primary,C.primary2,C.orange,C.neutral][i],k:o})).filter(x=>x.value>0);
   dbDonut('dbC2', ownItems, 'tashkilot', k=>{ if(DB_OWN.includes(k)) dbSet('own',k); });
   const regs = DB_REGIONS.map(r=>r[0]);

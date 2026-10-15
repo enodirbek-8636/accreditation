@@ -380,7 +380,7 @@ input[type=range]{width:100%;accent-color:var(--c-primary-2)}
 .db-btn svg{width:15px;height:15px}
 .db-ctx{font-size:12.5px;color:var(--c-text-2);margin:-6px 2px 14px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .db-ctx .chip{padding:4px 10px;font-size:12px;cursor:default}
-.db-kpi{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px}
+.db-kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px;margin-bottom:18px}
 .db-kpi .kpi-card{padding:14px 15px;cursor:pointer}
 .db-kpi .kpi-value{font-size:26px}
 .db-kpi .kpi-label{font-size:12.5px;margin-top:8px;min-height:34px;line-height:1.3}
@@ -418,10 +418,8 @@ input[type=range]{width:100%;accent-color:var(--c-primary-2)}
 .db-recon .bad{color:#be123c;font-weight:700}
 .db-sel{background:var(--c-bg);border:1px solid var(--border);border-radius:8px;padding:5px 8px;font-size:12px;color:var(--c-text)}
 .db-funnel-tbl td:first-child{text-align:left}
-@media(max-width:1500px){.db-kpi{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:1100px){.db-grid-3e,.db-grid-21{grid-template-columns:1fr}.db-grid-2{grid-template-columns:1fr}}
-@media(max-width:900px){.db-kpi{grid-template-columns:repeat(2,1fr)}.db-actions{margin-left:0}}
-@media(max-width:560px){.db-kpi{grid-template-columns:1fr}}
+@media(max-width:900px){.db-actions{margin-left:0}}
 /* embed: institutsional monitoring sahifalari */
 .embed-frame{display:block;width:100%;height:calc(100vh - 36px);min-height:640px;border:1px solid var(--border);
   border-radius:var(--radius);background:var(--c-card);box-shadow:var(--shadow)}
@@ -611,8 +609,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="nav-item" data-target="dsec-plan"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>Grafik va prognoz</button>
     <button class="nav-item" data-target="dsec-kompleks"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v7l-4 2v-9L3 4z"/></svg></span>Kompleks akkreditatsiya</button>
     <button class="nav-item" data-target="dsec-maxsus"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></span>Maxsus akkreditatsiya</button>
-    <button class="nav-item" data-target="dsec-risk"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4.5M12 17.2h.01"/></svg></span>Eʼtibor talab qiladi</button>
-    <button class="nav-item" data-target="dsec-insights"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg></span>Xulosalar</button>
   </nav>
   </div>
   <div class="mode-group no-sub" data-mode="tashkilot">
@@ -706,11 +702,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="panel"><div class="panel-head"><div><h3>Kompleks akkreditatsiya</h3><div class="pdesc">Birlik: ariza · bosqichga yetganlar · <span id="dbB1bN"></span></div></div></div><div class="chart" id="dbB1b" style="height:260px"></div></div>
     <div class="panel"><div class="panel-head"><div><h3>Maxsus akkreditatsiya</h3><div class="pdesc">Birlik: taʼlim dasturi · <span id="dbB1cN"></span></div></div></div><div class="chart" id="dbB1c" style="height:260px"></div></div>
   </div>
-  <div class="db-grid-3e">
-    <div class="panel"><div class="panel-head"><div><h3>Institutsional holat tarkibi</h3><div class="pdesc">Tashkilotlar · holat boʻyicha</div></div></div><div class="chart" id="dbB2a" style="height:250px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Kompleks jarayon bosqichlari</h3><div class="pdesc">Arizalar · joriy bosqich (hisobot sanasiga)</div></div></div><div class="chart" id="dbB2b" style="height:250px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Maxsus akkreditatsiya natijalari</h3><div class="pdesc">Dasturlar · natija boʻyicha</div></div></div><div class="chart" id="dbB2c" style="height:250px"></div></div>
-  </div>
 
   <!-- C. Taʼlim tashkilotlari -->
   <div class="section-title" id="dsec-orgs">Taʼlim tashkilotlari tahlili</div>
@@ -723,28 +714,16 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 
   <!-- D. Grafik va prognoz -->
   <div class="section-title" id="dsec-plan">Akkreditatsiya grafigi va prognoz</div>
-  <div class="db-grid-2">
-    <div class="panel"><div class="panel-head"><div><h3>Yillik akkreditatsiya grafigi</h3><div class="pdesc">Hisoblangan muddati tanlangan yildan boshlab 5 yil ichida tugaydigan tashkilotlar</div></div>
-      <select class="db-sel" id="dbD1Group"><option value="status">Holat boʻyicha</option><option value="edu">Taʼlim turi boʻyicha</option><option value="own">Mulkchilik boʻyicha</option></select></div><div class="chart" id="dbD1" style="height:320px"></div>
-      <div class="db-note">Manbada akkreditatsiya tadbirining «bajarilgan» sanasi alohida qayd etilmaydi; shuning uchun yakunlangan tadbirlar oʻtgan davr uchun koʻrsatilmaydi, muddati oʻtganlar «Muddati oʻtgan» sifatida ajratiladi.</div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Oylik akkreditatsiya kalendari</h3><div class="pdesc">Tanlangan yil · institutsional muddatlar, kompleks va maxsus joyiga chiqishlar</div></div></div><div class="chart" id="dbD2" style="height:320px"></div><div class="db-note" id="dbD2Note" style="display:none">Maʼlumot mavjud emas</div></div>
-  </div>
   <div class="db-grid-21">
-    <div class="panel"><div class="panel-head"><div><h3>Yaqinlashayotgan muddatlar</h3><div class="pdesc">Institutsional akkreditatsiya · bir-birini istisno qiluvchi davrlar: 0–30 · 31–60 · 61–90 · 90+ kun</div></div></div><div class="chart" id="dbD3" style="height:260px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Eng yaqin muddatlar</h3><div class="pdesc">Qatorga bosib tashkilot kartochkasini oching</div></div></div><div class="table-scroll" style="max-height:260px;border:none"><table class="db-table" id="dbD4"></table></div></div>
+    <div class="panel"><div class="panel-head"><div><h3>Yillik akkreditatsiya grafigi</h3><div class="pdesc">Hisoblangan muddati tanlangan yildan boshlab 5 yil ichida tugaydigan tashkilotlar</div></div>
+      <select class="db-sel" id="dbD1Group"><option value="status">Holat boʻyicha</option><option value="edu">Taʼlim turi boʻyicha</option><option value="own">Mulkchilik boʻyicha</option></select></div><div class="chart" id="dbD1" style="height:340px"></div>
+      <div class="db-note">Manbada akkreditatsiya tadbirining «bajarilgan» sanasi alohida qayd etilmaydi; shuning uchun yakunlangan tadbirlar oʻtgan davr uchun koʻrsatilmaydi, muddati oʻtganlar «Muddati oʻtgan» sifatida ajratiladi.</div></div>
+    <div class="panel"><div class="panel-head"><div><h3>Eng yaqin muddatlar</h3><div class="pdesc">Qatorga bosib tashkilot kartochkasini oching</div></div></div><div class="table-scroll" style="max-height:380px;border:none"><table class="db-table" id="dbD4"></table></div></div>
   </div>
 
   <!-- E. Kompleks -->
   <div class="section-title" id="dsec-kompleks">Kompleks davlat akkreditatsiyasi monitoringi</div>
-  <div class="db-grid-21">
-    <div class="panel"><div class="panel-head"><div><h3>Jarayon voronkasi</h3><div class="pdesc">Bosqichga yetgan arizalar · hisobot sanasiga qadar haqiqatan tugagan sanalar asosida</div></div></div><div class="chart" id="dbE1" style="height:300px"></div><table class="db-table db-funnel-tbl" id="dbE1T"></table></div>
-    <div class="panel"><div class="panel-head"><div><h3>Joyiga chiqish monitoringi</h3><div class="pdesc">Arizalar · sanalar hisobot sanasiga nisbatan</div></div></div><div class="db-tiles" id="dbE3"></div><div class="db-note" id="dbENote" style="display:none"></div></div>
-  </div>
-  <div class="db-grid-2">
-    <div class="panel"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha kompleks arizalar</h3><div class="pdesc">Joriy bosqich kesimida</div></div></div><div class="chart" id="dbE2" style="height:300px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Jarayon kechikishlari</h3><div class="pdesc">Joyiga chiqish sanasidan keyin yakunlanmagan arizalar (15–20 kun — ogohlantirish, 20+ kun — kritik)</div></div></div><div class="chart" id="dbE4" style="height:300px"></div></div>
-  </div>
-  <div class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h3>Kechikkan arizalar roʻyxati</h3><div class="pdesc">Ariza · tashkilot · bosqich · koordinator · kechikish (kun)</div></div></div><div class="table-scroll" style="max-height:320px;border:none"><table class="db-table" id="dbE4T"></table></div></div>
+  <div class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha kompleks arizalar</h3><div class="pdesc">Joriy bosqich kesimida · birlik: ariza</div></div></div><div class="chart" id="dbE2" style="height:320px"></div><div class="db-note" id="dbENote" style="display:none"></div></div>
 
   <!-- F. Maxsus -->
   <div class="section-title" id="dsec-maxsus">Maxsus davlat akkreditatsiyasi natijalari</div>
@@ -753,25 +732,7 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="panel"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha natijalar</h3><div class="pdesc">Dasturlar · oʻtgan / jarayonda / oʻtmagan</div></div></div><div class="chart" id="dbF2" style="height:270px"></div></div>
     <div class="panel"><div class="panel-head"><div><h3>Mulkchilik shakli boʻyicha natijalar</h3><div class="pdesc">Dasturlar · tashkilot mulkchiligi</div></div></div><div class="chart" id="dbF3" style="height:270px"></div></div>
   </div>
-  <div class="db-grid-21">
-    <div class="panel"><div class="panel-head"><div><h3>Bilim sohalari boʻyicha natijalar</h3><div class="pdesc">Eng koʻp dasturli 12 ta soha</div></div></div><div class="chart" id="dbF4" style="height:380px"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Arizalar va dasturlar yuklamasi</h3><div class="pdesc">Birliklar aniq koʻrsatilgan</div></div></div><div class="db-tiles" id="dbF5" style="grid-template-columns:1fr 1fr"></div><div class="db-note" id="dbFNote" style="display:none"></div></div>
-  </div>
-
-  <!-- G. Risklar -->
-  <div class="section-title" id="dsec-risk">Eʼtibor talab qiladigan holatlar</div>
-  <div class="panel" style="margin-bottom:18px">
-    <div class="panel-head"><div><h3>Ustuvor holatlar (TOP-10)</h3><div class="pdesc" id="dbRiskDesc">Kritik — muddati oʻtgan / 20+ kun kechikkan · Yuqori — 30 kun ichida / 15–20 kun kechikkan · Oʻrta — 7 kun ichidagi joyiga chiqish · Past — maʼlumot toʻliq emas</div></div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="mini-btn" data-dbgo="inst-overdue">Institutsional →</button><button class="mini-btn" data-dbgo="komp-crit">Kompleks →</button><button class="mini-btn" data-dbgo="mx-crit">Maxsus →</button></div></div>
-    <div class="db-risk" id="dbRisk"></div>
-  </div>
-
-  <!-- H. Xulosalar -->
-  <div class="section-title" id="dsec-insights">Umumiy tahlil va asosiy xulosalar</div>
-  <div class="db-grid-21">
-    <div class="panel"><div class="panel-head"><div><h3>Avtomatik xulosalar</h3><div class="pdesc">Joriy maʼlumotlardan deterministik hisoblangan</div></div></div><div class="db-insights" id="dbInsights"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Maʼlumotlar mosligi tekshiruvi</h3><div class="pdesc">Dashboard ↔ manba modullari</div></div></div><table class="db-table db-recon" id="dbRecon"></table></div>
-  </div>
+  <div class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h3>Bilim sohalari boʻyicha natijalar</h3><div class="pdesc">Eng koʻp dasturli 12 ta soha · birlik: dastur</div></div></div><div class="chart" id="dbF4" style="height:380px"></div><div class="db-note" id="dbFNote" style="display:none"></div></div>
 </div>
 
 <div id="modeMaxsus">
@@ -5121,7 +5082,6 @@ function dbGo(what){
 /* ---- A. KPI ---- */
 function dbRenderKPI(D){
   const {inst,komp,mx} = D, C=DB_C();
-  const mxCritTotal = komp.crit + mx.crit;
   const cards = [
     {label:'Taʼlim tashkilotlari', v:inst.total, ic:'app', col:C.primary, sub:`${inst.active+inst.soon+inst.overdue+inst.progress} ta faol · ${inst.closed} ta tugatilgan`, pct:100,
       tip:'Institutsional reyestrdagi noyob tashkilotlar soni (T/r boʻyicha). Birlik: tashkilot.', go:'inst-all'},
@@ -5131,12 +5091,8 @@ function dbRenderKPI(D){
       tip:'Muddatigacha 0–365 kun qolgan va ariza bermagan tashkilotlar.', go:'inst-soon'},
     {label:'Muddati oʻtgan tashkilotlar', v:inst.overdue, ic:'x', col:C.red, sub:fmtPct(dbPct(inst.overdue,inst.total))+' · hisoblangan muddat oʻtgan', pct:dbPct(inst.overdue,inst.total),
       tip:'Hisoblangan muddati hisobot sanasidan oldin tugagan va ariza bermagan tashkilotlar.', go:'inst-overdue'},
-    {label:`${dbState.year}-yil akkreditatsiya rejasi`, v:inst.plannedYear, ic:'target', col:C.primary2, sub:`muddati ${dbState.year}-yilda tugaydigan tashkilotlar`, pct:dbPct(inst.plannedYear,inst.total),
-      tip:'Hisoblangan akkreditatsiya muddati tanlangan yilga toʻgʻri keladigan tashkilotlar (tugatilganlardan tashqari).', go:'inst-plan'},
     {label:'Kompleks akkreditatsiya arizalari', v:komp.total, ic:'app', col:C.primary, sub:`${komp.orgs} ta tashkilot`, pct:100,
       tip:'Kompleks davlat akkreditatsiyasi arizalari soni. Birlik: ariza.', go:'komp-all'},
-    {label:'Kompleks — joyiga chiqilgan', v:komp.visited, ic:'check', col:C.green, sub:fmtPct(dbPct(komp.visited,komp.total))+' · tashrif sanasi oʻtgan', pct:dbPct(komp.visited,komp.total),
-      tip:'Joyiga chiqish sanasi hisobot sanasidan oldin boʻlgan arizalar. Kelajakdagi rejalashtirilgan tashriflar hisoblanmaydi.', go:'komp-visited'},
     {label:'Kompleks — jarayonda', v:komp.inProgress, ic:'loader', col:C.yellow, sub:`${komp.upcoming} ta tashrif rejada · ${komp.noVisitDate} ta sanasiz`, pct:dbPct(komp.inProgress,komp.total),
       tip:'Joyiga chiqish hali amalga oshmagan arizalar (sana kelajakda yoki belgilanmagan).', go:'komp-progress'},
     {label:'Maxsus akkreditatsiya dasturlari', v:mx.progs, ic:'book', col:C.primary, sub:`${mx.apps} ta ariza · ${mx.orgs} ta tashkilot`, pct:100,
@@ -5144,9 +5100,7 @@ function dbRenderKPI(D){
     {label:'Maxsus akkreditatsiyadan oʻtgan', v:mx.passed, ic:'award', col:C.green, sub:fmtPct(dbPct(mx.passed,mx.progs))+' · dasturlar', pct:dbPct(mx.passed,mx.progs),
       tip:'Komissiya qarori bilan akkreditatsiyadan oʻtgan dasturlar.', go:'mx-passed'},
     {label:'Maxsus — jarayonda', v:mx.inProgress, ic:'loader', col:C.yellow, sub:`${fmtPct(dbPct(mx.inProgress,mx.progs))} · ${mx.activeApps} ta faol ariza`, pct:dbPct(mx.inProgress,mx.progs),
-      tip:'Hali komissiya qarori qabul qilinmagan dasturlar.', go:'mx-progress'},
-    {label:'Kritik kechikishlar', v:mxCritTotal, ic:'x', col:C.red, sub:`kompleks ${komp.crit} · maxsus ${mx.crit} ta ariza`, pct:dbPct(mxCritTotal, komp.total+mx.apps),
-      tip:'Joyiga chiqish sanasidan 20 kundan ortiq oʻtib yakunlanmagan arizalar (kompleks + maxsus, takrorlanmaydi). Institutsional muddati oʻtganlar alohida (4-karta).', go: komp.crit>=mx.crit?'komp-crit':'mx-crit'}
+      tip:'Hali komissiya qarori qabul qilinmagan dasturlar.', go:'mx-progress'}
   ];
   $('#dbKpi').innerHTML = cards.map((c,i)=>{
     const hx = c.col.startsWith('rgb')?rgbToHex(c.col):c.col;
@@ -5211,9 +5165,6 @@ function dbRenderB(D){
     name=>dbSet('status', {Amalda:'active',Jarayonda:'progress','Muddati yaqin':'soon','Muddati oʻtgan':'overdue'}[name]));
   dbHBar('dbB1b', ['Ariza berilgan','Ichki baholash tugagan','Ekspert biriktirilgan','Joyiga chiqilgan'], [komp.total,komp.assessed,komp.expert,komp.visited], [C.neutral,'#84cc16',C.primary2,C.green], komp.total, 'ta ariza');
   dbHBar('dbB1c', ['Oʻtgan','Jarayonda','Oʻtmagan'], [mx.passed,mx.inProgress,mx.failed], [C.green,C.yellow,C.red], mx.progs, 'ta dastur');
-  dbDonut('dbB2a', DB_INST_STATUS.filter(s=>inst[s.k]>0).map(s=>({name:s.label,value:inst[s.k],color:DB_INST_COL(s.k),k:s.k})), 'tashkilot', k=>dbSet('status',k));
-  dbDonut('dbB2b', K_ORDER.filter(s=>komp.stage[s]>0).map(s=>({name:K_STAGE[s].label,value:komp.stage[s],color:colOf(K_STAGE[s].col),k:s})), 'ariza');
-  dbDonut('dbB2c', [{name:'Oʻtgan',value:mx.passed,color:C.green,k:'passed'},{name:'Jarayonda',value:mx.inProgress,color:C.yellow,k:'inProgress'},{name:'Oʻtmagan',value:mx.failed,color:C.red,k:'failed'}].filter(x=>x.value>0), 'dastur');
 }
 /* ---- C ---- */
 function dbRenderC(D){
@@ -5239,29 +5190,6 @@ function dbRenderD1(D){
   else series = [['active','Kutilmoqda (amalda)'],['soon','Muddati yaqin'],['overdue','Muddati oʻtgan'],['progress','Jarayonda']].map(([s,n])=>({name:n,color:DB_INST_COL(s),data:years.map(y=>dbCount(I,r=>r.dlYear===y&&r.status===s))}));
   dbStacked('dbD1', years.map(String), series, {unit:'ta tashkilot',labels:true,onClick:(cat)=>dbOpenInst('timeline', dbInstParams({}))});
 }
-function dbRenderD2(D){
-  const Y=dbState.year, C=DB_C();
-  const months=['Yan','Fev','Mar','Apr','May','Iyn','Iyl','Avg','Sen','Okt','Noy','Dek'];
-  const inst = months.map((_,i)=>dbCount(D.I,r=>r.dlYear===Y&&r.dlMonth===i+1&&r.status!=='closed'));
-  const kv = months.map((_,i)=>dbCount(D.K,r=>r.vDate&&r.vDate.startsWith(Y+'-'+String(i+1).padStart(2,'0'))));
-  const mv = months.map((_,i)=>dbCount(D.A,a=>a.eDate&&a.eDate.startsWith(Y+'-'+String(i+1).padStart(2,'0'))));
-  const any = inst.some(v=>v)||kv.some(v=>v)||mv.some(v=>v);
-  $('#dbD2Note').style.display = any?'none':'';
-  dbChart('dbD2', {
-    grid:{left:8,right:12,top:34,bottom:8,containLabel:true},
-    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox()},
-    legend:{top:0,textStyle:{color:C.text2,fontSize:11},itemWidth:10,itemHeight:10},
-    xAxis:{type:'category',data:months,axisLabel:{color:C.text2,fontSize:11},axisLine:{lineStyle:{color:cssVar('--border')}}},
-    yAxis:{type:'value',...axisStyle()},
-    series:[{name:'Institutsional muddatlar (tashkilot)',type:'bar',barMaxWidth:18,itemStyle:{color:C.primary},data:inst},
-      {name:'Kompleks joyiga chiqish (ariza)',type:'bar',barMaxWidth:18,itemStyle:{color:C.primary2},data:kv},
-      {name:'Maxsus joyiga chiqish (ariza)',type:'bar',barMaxWidth:18,itemStyle:{color:C.yellow},data:mv}]
-  });
-}
-function dbRenderD3(D){
-  const {inst}=D, C=DB_C();
-  dbHBar('dbD3', ['0–30 kun','31–60 kun','61–90 kun','90+ kun'], [inst.d30,inst.d60,inst.d90,inst.d90p], [C.red,C.orange,C.yellow,C.green], inst.d30+inst.d60+inst.d90+inst.d90p, 'ta tashkilot', name=>{ if(name==='0–30 kun') dbGo('inst-soon'); });
-}
 function dbRenderD4(D){
   const list = D.I.filter(r=>r.days!=null&&r.days>=0&&r.status!=='progress').sort((a,b)=>a.days-b.days).slice(0,12);
   $('#dbD4').innerHTML = `<thead><tr><th>Tashkilot</th><th>Hudud</th><th>Muddat</th><th>Qoldi</th></tr></thead><tbody>`+
@@ -5270,32 +5198,10 @@ function dbRenderD4(D){
 }
 /* ---- E ---- */
 function dbRenderE(D){
-  const {K,komp}=D, C=DB_C(), ref=dbState.ref;
-  const stages=[['Ariza berilgan',komp.total,C.neutral],['Ariza qabul qilingan',komp.accepted,C.primary2],['Ichki baholash yakunlangan',komp.assessed,'#84cc16'],['Ekspert biriktirilgan',komp.expert,C.yellow],['Joyiga chiqilgan',komp.visited,C.green]];
-  dbChart('dbE1', {
-    tooltip:{trigger:'item',...tipBox(),formatter:p=>`<b>${p.name}</b><br/>${fmtNum(p.value)} ta ariza · ${fmtPct(dbPct(p.value,komp.total))}`},
-    series:[{type:'funnel',sort:'none',left:'4%',right:'4%',top:6,bottom:6,minSize:'18%',gap:3,label:{position:'inside',color:'#fff',fontWeight:'bold',fontSize:11,formatter:p=>`${p.name}: ${fmtNum(p.value)}`},
-      itemStyle:{borderColor:cssVar('--c-card'),borderWidth:1},data:stages.map(s=>({name:s[0],value:s[1],itemStyle:{color:s[2]}}))}]
-  });
-  $('#dbE1T').innerHTML = `<thead><tr><th>Bosqich</th><th>Yetgan</th><th>Oldingi bosqichga nisbatan</th><th>Barcha arizalarga nisbatan</th><th>Yetmagan</th></tr></thead><tbody>`+
-    stages.map((s,i)=>`<tr><td>${s[0]}</td><td><b>${fmtNum(s[1])}</b></td><td>${i?fmtPct(dbPct(s[1],stages[i-1][1])):'—'}</td><td>${fmtPct(dbPct(s[1],komp.total))}</td><td>${fmtNum(komp.total-s[1])}</td></tr>`).join('')+'</tbody>';
+  const {K}=D, ref=dbState.ref;
   const eduKeys = DB_EDU.map(e=>e.k).filter(k=>K.some(r=>dbEduKey(r.edu)===k));
-  dbStacked('dbE2', eduKeys.map(DB_EDU_LABEL), K_ORDER.map(s=>({name:K_STAGE[s].label,color:colOf(K_STAGE[s].col),data:eduKeys.map(k=>dbCount(K,r=>dbEduKey(r.edu)===k&&kStageOf(r,ref)===s))})), {unit:'ta ariza',labels:true,rotate:eduKeys.length>3?12:0});
-  const tiles=[['Rejalashtirilgan tashriflar',komp.visitSet,C.primary],['Amalga oshirilgan',komp.visited,C.green],['Kelgusi tashriflar',komp.upcoming,C.primary2],['Kechikkan (15+ kun)',komp.warn+komp.crit,C.red],['Sana belgilanmagan',komp.noVisitDate,C.neutral]];
-  $('#dbE3').innerHTML = tiles.map(t=>`<div class="db-tile"><div class="tv" style="color:${t[2]}">${fmtNum(t[1])}</div><div class="tl">${t[0]}</div></div>`).join('');
+  dbStacked('dbE2', eduKeys.map(DB_EDU_LABEL), K_ORDER.map(s=>({name:K_STAGE[s].label,color:colOf(K_STAGE[s].col),data:eduKeys.map(k=>dbCount(K,r=>dbEduKey(r.edu)===k&&kStageOf(r,ref)===s))})), {unit:'ta ariza',labels:true,rotate:eduKeys.length>3?12:0,onClick:(cat)=>{ const e=DB_EDU.find(x=>x.label===cat); if(e) dbSet('edu',e.k); }});
   const note=$('#dbENote'); if(dbState.region||dbState.status){ note.style.display=''; note.innerHTML='<span class="db-na">⚠ Hudud va institutsional holat filtrlari kompleks arizalarga qoʻllanmaydi</span>'; } else note.style.display='none';
-  const delayed = K.map(r=>({r,o:dbKOver(r)})).filter(x=>x.o.k==='crit'||x.o.k==='warn').sort((a,b)=>b.o.days-a.o.days);
-  const top = delayed.slice(0,15);
-  dbChart('dbE4', {
-    grid:{left:8,right:50,top:8,bottom:8,containLabel:true},
-    tooltip:{trigger:'item',...tipBox(),formatter:p=>{const x=top[p.dataIndex]; return `<b>${x.r.app}</b><br/>${x.r.hei}<br/>${K_STAGE[kStageOf(x.r,ref)].label}<br/>Koordinator: ${x.r.coord}<br/>Kechikish: <b>${x.o.days} kun</b>`;}},
-    xAxis:{type:'value',name:'kun',...axisStyle()},
-    yAxis:{type:'category',data:top.map(x=>x.r.app).reverse(),axisLabel:{color:C.text2,fontSize:10.5},axisLine:{lineStyle:{color:cssVar('--border')}},axisTick:{show:false}},
-    series:[{type:'bar',barWidth:'60%',label:{show:true,position:'right',color:cssVar('--c-text'),fontSize:11,fontWeight:'bold'},data:top.map(x=>({value:x.o.days,itemStyle:{color:x.o.k==='crit'?C.red:C.orange,borderRadius:[0,4,4,0]}})).reverse()}]
-  });
-  $('#dbE4T').innerHTML = `<thead><tr><th>Ariza</th><th>Tashkilot</th><th>Bosqich</th><th>Koordinator</th><th>Tashrif sanasi</th><th>Kechikish</th><th>Daraja</th></tr></thead><tbody>`+
-    (delayed.map(x=>`<tr class="link" data-app="${x.r.app}"><td><b>${x.r.app}</b></td><td>${x.r.hei}</td><td>${K_STAGE[kStageOf(x.r,ref)].label}</td><td>${x.r.coord}</td><td>${fmtDate(x.r.vDate)}</td><td><b>${x.o.days} kun</b></td><td><span class="badge ${x.o.k==='crit'?'p-urgent':'p-high'}">${x.o.k==='crit'?'Kritik':'Ogohlantirish'}</span></td></tr>`).join('')||'<tr><td colspan="7" style="text-align:center;color:var(--c-text-2)">Kechikkan ariza yoʻq</td></tr>')+'</tbody>';
-  $$('#dbE4T tr[data-app]').forEach(tr=>tr.onclick=()=>{ switchMode('kompleks'); setTimeout(()=>kOpenModal(tr.dataset.app),200); });
 }
 /* ---- F ---- */
 function dbRenderF(D){
@@ -5309,11 +5215,9 @@ function dbRenderF(D){
   const fm={}; P.forEach(p=>{ const f=p.field||'Aniqlanmagan'; if(!fm[f]) fm[f]={passed:0,inProgress:0,failed:0,total:0}; fm[f][p.status]++; fm[f].total++; });
   const fields = Object.keys(fm).sort((a,b)=>fm[b].total-fm[a].total).slice(0,12).reverse();
   dbStacked('dbF4', fields, res.map(s=>({name:s[1],color:s[2],data:fields.map(f=>fm[f][s[0]])})), {horizontal:true,unit:'ta dastur',labels:true,catFmt:v=>v.length>34?v.slice(0,33)+'…':v});
-  const tiles=[['Arizalar (jami)',mx.apps,C.primary,'ariza'],['Dasturlar (jami)',mx.progs,C.primary,'dastur'],['Oʻrtacha dastur / ariza',mx.avgPerApp,C.primary2,'dastur'],['Faol arizalar',mx.activeApps,C.yellow,'ariza'],['Yakunlangan natijalar',mx.passed+mx.failed,C.green,'dastur'],['Yakunlangan arizalar',mx.doneApps,C.green,'ariza']];
-  $('#dbF5').innerHTML = tiles.map(t=>`<div class="db-tile"><div class="tv" style="color:${t[2]}">${typeof t[1]==='number'&&!Number.isInteger(t[1])?t[1].toFixed(1):fmtNum(t[1])}</div><div class="tl">${t[0]} <span style="opacity:.7">· ${t[3]}</span></div></div>`).join('');
   const note=$('#dbFNote'); if(dbState.region||dbState.status){ note.style.display=''; note.innerHTML='<span class="db-na">⚠ Hudud va institutsional holat filtrlari maxsus dasturlarga qoʻllanmaydi</span>'; } else note.style.display='none';
 }
-/* ---- G. risklar ---- */
+/* ---- (G/H bloklari platformadan olib tashlangan; moslik tekshiruvi konsolda va eksportda qoladi) ---- */
 function dbRiskItems(D){
   const items=[]; const C=DB_C();
   D.I.forEach(r=>{
@@ -5385,8 +5289,7 @@ function dbReconcile(){
   if(kState.refDate===dbState.ref){ add('Kompleks: ekspert biriktirilgan', D.komp.expert, KOMPLEKS.filter(r=>kStageOf(r)==='expert').length, 'ariza'); add('Kompleks: kritik kechikkan', D.komp.crit, KOMPLEKS.filter(r=>kOverdue(r).k==='crit').length, 'ariza'); }
   add('Maxsus arizalar', D.mx.apps, t.appTotal, 'ariza'); add('Maxsus dasturlar', D.mx.progs, t.progTotal, 'dastur');
   add('Maxsus: oʻtgan dasturlar', D.mx.passed, t.progPassed, 'dastur'); add('Maxsus: jarayondagi dasturlar', D.mx.inProgress, t.progInProgress, 'dastur'); add('Maxsus: oʻtmagan dasturlar', D.mx.failed, t.progFailed, 'dastur');
-  $('#dbRecon').innerHTML = `<thead><tr><th>Koʻrsatkich</th><th>Dashboard</th><th>Manba</th><th>Holat</th></tr></thead><tbody>`+rows.map(r=>`<tr><td>${r[0]} <span style="opacity:.6">(${r[3]})</span></td><td><b>${fmtNum(r[1])}</b></td><td>${fmtNum(r[2])}</td><td class="${r[4]?'ok':'bad'}">${r[4]?'✓ mos':'✗ farq'}</td></tr>`).join('')+'</tbody>';
-  const bad = rows.filter(r=>!r[4]); if(bad.length) console.warn('Dashboard moslik: farq', bad);
+  const tbl = $('#dbRecon'); if(tbl) tbl.innerHTML = `<thead><tr><th>Koʻrsatkich</th><th>Dashboard</th><th>Manba</th><th>Holat</th></tr></thead><tbody>`+rows.map(r=>`<tr><td>${r[0]} <span style="opacity:.6">(${r[3]})</span></td><td><b>${fmtNum(r[1])}</b></td><td>${fmtNum(r[2])}</td><td class="${r[4]?'ok':'bad'}">${r[4]?'✓ mos':'✗ farq'}</td></tr>`).join('')+'</tbody>';
   return rows;
 }
 /* ---- toʻliq chizish ---- */
@@ -5400,24 +5303,23 @@ function dbRender(){
   show('#dsec-orgs, #dsec-plan', !acc||acc==='inst'); show('#dsec-kompleks', !acc||acc==='kompleks'); show('#dsec-maxsus', !acc||acc==='maxsus');
   // boʻlim paneli koʻrinishi: section-title dan keyingi elementlar keyingi section-title gacha
   ['dsec-orgs','dsec-plan','dsec-kompleks','dsec-maxsus'].forEach(id=>{ const on = !acc || (id==='dsec-kompleks'?acc==='kompleks': id==='dsec-maxsus'?acc==='maxsus': acc==='inst'); let el=document.getElementById(id); if(!el) return; el.style.display=on?'':'none'; el=el.nextElementSibling; while(el && !el.classList.contains('section-title')){ el.style.display=on?'':'none'; el=el.nextElementSibling; } });
-  dbRenderB(D); if(!acc||acc==='inst'){ dbRenderC(D); dbRenderD1(D); dbRenderD2(D); dbRenderD3(D); dbRenderD4(D); }
+  dbRenderB(D); if(!acc||acc==='inst'){ dbRenderC(D); dbRenderD1(D); dbRenderD4(D); }
   if(!acc||acc==='kompleks') dbRenderE(D); if(!acc||acc==='maxsus') dbRenderF(D);
-  dbRenderG(D); dbRenderH(D); dbReconcile();
+  const recon = dbReconcile(); const bad = recon.filter(r=>!r[4]); if(bad.length) console.warn('Dashboard moslik: farq', bad);   // konsolga: manba bilan moslik
   setTimeout(()=>Object.values(dbCharts).forEach(c=>c&&!c.isDisposed()&&c.resize()),80);
 }
 /* ---- eksport: Word / PDF / Excel ---- */
 function dbReportData(){
   const D=_dbLast||dbCompute(), {inst,komp,mx}=D;
   const filt=[['Hisobot sanasi',fmtDate(dbState.ref)],['Yil',String(dbState.year)],['Taʼlim turi',dbState.edu?DB_EDU_LABEL(dbState.edu):'Barchasi'],['Hudud',dbState.region?DB_REGION_LABEL(dbState.region):'Barchasi'],['Mulkchilik',dbState.own||'Barchasi'],['Akkreditatsiya turi',dbState.acc||'Barchasi'],['Holat',dbState.status?DB_INST_LABEL(dbState.status):'Barchasi']];
-  const kpi=[['Taʼlim tashkilotlari',inst.total,'tashkilot'],['Akkreditatsiyadan oʻtgan (amalda)',inst.active,'tashkilot'],['Muddati yaqinlashgan',inst.soon,'tashkilot'],['Muddati oʻtgan',inst.overdue,'tashkilot'],[dbState.year+'-yil rejasi',inst.plannedYear,'tashkilot'],
-    ['Kompleks arizalar',komp.total,'ariza'],['Kompleks — joyiga chiqilgan',komp.visited,'ariza'],['Kompleks — jarayonda',komp.inProgress,'ariza'],['Maxsus dasturlar',mx.progs,'dastur'],['Maxsus — oʻtgan',mx.passed,'dastur'],['Maxsus — jarayonda',mx.inProgress,'dastur'],['Kritik kechikishlar',komp.crit+mx.crit,'ariza']];
+  const kpi=[['Taʼlim tashkilotlari',inst.total,'tashkilot'],['Akkreditatsiyadan oʻtgan (amalda)',inst.active,'tashkilot'],['Muddati yaqinlashgan',inst.soon,'tashkilot'],['Muddati oʻtgan',inst.overdue,'tashkilot'],
+    ['Kompleks arizalar',komp.total,'ariza'],['Kompleks — jarayonda',komp.inProgress,'ariza'],['Maxsus dasturlar',mx.progs,'dastur'],['Maxsus — oʻtgan',mx.passed,'dastur'],['Maxsus — jarayonda',mx.inProgress,'dastur']];
   const regs=DB_REGIONS.map(r=>[r[1], ...['active','soon','overdue','progress','nodata'].map(s=>dbCount(D.I,x=>x.region===r[0]&&x.status===s)), dbCount(D.I,x=>x.region===r[0])]);
   const edus=DB_EDU.map(e=>[e.label, dbCount(D.I,x=>x.edu===e.k), dbCount(D.I,x=>x.edu===e.k&&x.status==='active'), dbCount(D.I,x=>x.edu===e.k&&x.status==='overdue'), dbCount(D.K,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k&&x.status==='passed')]);
   const years=Array.from({length:5},(_,i)=>dbState.year+i).map(y=>[String(y), ...['active','soon','overdue','progress'].map(s=>dbCount(D.I,x=>x.dlYear===y&&x.status===s)), dbCount(D.I,x=>x.dlYear===y&&x.status!=='closed')]);
-  const funnel=[['Ariza berilgan',komp.total],['Ariza qabul qilingan',komp.accepted],['Ichki baholash yakunlangan',komp.assessed],['Ekspert biriktirilgan',komp.expert],['Joyiga chiqilgan',komp.visited]].map((s,i,a)=>[s[0],s[1],i?fmtPct(dbPct(s[1],a[i-1][1])):'—',fmtPct(dbPct(s[1],komp.total))]);
-  const risks=dbRiskItems(D).slice(0,25).map((x,i)=>[String(i+1),x.name,x.type,x.cat,x.days!=null?x.days+' kun':'—',x.who||'—',x.lvl]);
+  const stages=[['Ariza berilgan',komp.total],['Ariza qabul qilingan',komp.accepted],['Ichki baholash yakunlangan',komp.assessed],['Ekspert biriktirilgan',komp.expert],['Joyiga chiqilgan',komp.visited]].map(s=>[s[0],s[1],fmtPct(dbPct(s[1],komp.total))]);
   const recon=dbReconcile().map(r=>[r[0],r[1],r[2],r[4]?'mos':'farq']);
-  return {D,filt,kpi,regs,edus,years,funnel,risks,recon,insights:dbInsights(D).map(s=>s.replace(/<[^>]+>/g,''))};
+  return {D,filt,kpi,regs,edus,years,stages,recon};
 }
 function dbExport(fmt){
   toast('Hisobot tayyorlanmoqda...');
@@ -5432,23 +5334,18 @@ function dbExport(fmt){
       sh('Hududlar', [['Hudud','Amalda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Maʼlumot yoʻq','Jami'],...R.regs]);
       sh('Taʼlim turlari', [['Taʼlim turi','Tashkilotlar','Amalda','Muddati oʻtgan','Kompleks arizalar','Maxsus dasturlar','Maxsus oʻtgan'],...R.edus]);
       sh('Yillik reja', [['Yil','Kutilmoqda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Jami'],...R.years]);
-      sh('Kompleks voronka', [['Bosqich','Arizalar','Oldingiga nisbatan','Jamiga nisbatan'],...R.funnel]);
-      sh('Risklar', [['№','Tashkilot','Tur','Holat','Kun','Masʼul','Daraja'],...R.risks]);
-      sh('Xulosalar', [['№','Xulosa'],...R.insights.map((s,i)=>[i+1,s])]);
+      sh('Kompleks bosqichlar', [['Bosqich','Arizalar','Jamiga nisbatan'],...R.stages]);
       sh('Moslik', [['Koʻrsatkich','Dashboard','Manba','Holat'],...R.recon]);
       XLSX.writeFile(wb, `dashboard_${stamp}.xlsx`); toast('Excel fayli yuklab olindi'); return;
     }
     const secs=[
-      ['1. Qisqacha xulosa', R.insights, null],
-      ['2. Asosiy milliy koʻrsatkichlar', [], ['Koʻrsatkich','Qiymat','Birlik'], R.kpi],
-      ['3. Institutsional akkreditatsiya — hududlar kesimi', [], ['Hudud','Amalda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Maʼlumot yoʻq','Jami'], R.regs],
-      ['4. Taʼlim turlari kesimi', [], ['Taʼlim turi','Tashkilotlar','Amalda','Muddati oʻtgan','Kompleks arizalar','Maxsus dasturlar','Maxsus oʻtgan'], R.edus],
-      ['5. Akkreditatsiya grafigi (5 yil)', ['Hisoblangan muddati tegishli yilda tugaydigan tashkilotlar.'], ['Yil','Kutilmoqda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Jami'], R.years],
-      ['6. Kompleks akkreditatsiya jarayoni', [], ['Bosqich','Arizalar','Oldingiga nisbatan','Jamiga nisbatan'], R.funnel],
-      ['7. Maxsus akkreditatsiya natijalari', [`Jami ${fmtNum(R.D.mx.progs)} ta dastur: oʻtgan — ${fmtNum(R.D.mx.passed)} (${fmtPct(dbPct(R.D.mx.passed,R.D.mx.progs))}), jarayonda — ${fmtNum(R.D.mx.inProgress)}, oʻtmagan — ${fmtNum(R.D.mx.failed)}. Arizalar: ${fmtNum(R.D.mx.apps)} ta, oʻrtacha ${R.D.mx.avgPerApp} dastur/ariza.`], null],
-      ['8. Risklar va muddati oʻtgan holatlar', [], ['№','Tashkilot','Tur','Holat','Kun','Masʼul','Daraja'], R.risks],
-      ['9. Asosiy xulosalar va tavsiyalar', R.insights.concat(['Tavsiya: muddati oʻtgan va 30 kun ichida tugaydigan tashkilotlar boʻyicha ariza berish jarayoni tezlashtirilsin; kritik kechikkan kompleks va maxsus arizalar boʻyicha haftalik nazorat joriy etilsin.']), null],
-      ['10. Maʼlumotlar mosligi', [], ['Koʻrsatkich','Dashboard','Manba','Holat'], R.recon]
+      ['1. Asosiy milliy koʻrsatkichlar', [], ['Koʻrsatkich','Qiymat','Birlik'], R.kpi],
+      ['2. Institutsional akkreditatsiya — hududlar kesimi', [], ['Hudud','Amalda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Maʼlumot yoʻq','Jami'], R.regs],
+      ['3. Taʼlim turlari kesimi', [], ['Taʼlim turi','Tashkilotlar','Amalda','Muddati oʻtgan','Kompleks arizalar','Maxsus dasturlar','Maxsus oʻtgan'], R.edus],
+      ['4. Akkreditatsiya grafigi (5 yil)', ['Hisoblangan muddati tegishli yilda tugaydigan tashkilotlar.'], ['Yil','Kutilmoqda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Jami'], R.years],
+      ['5. Kompleks akkreditatsiya bosqichlari', [], ['Bosqich','Arizalar','Jamiga nisbatan'], R.stages],
+      ['6. Maxsus akkreditatsiya natijalari', [`Jami ${fmtNum(R.D.mx.progs)} ta dastur: oʻtgan — ${fmtNum(R.D.mx.passed)} (${fmtPct(dbPct(R.D.mx.passed,R.D.mx.progs))}), jarayonda — ${fmtNum(R.D.mx.inProgress)}, oʻtmagan — ${fmtNum(R.D.mx.failed)}. Arizalar: ${fmtNum(R.D.mx.apps)} ta.`], null],
+      ['7. Maʼlumotlar mosligi', [], ['Koʻrsatkich','Dashboard','Manba','Holat'], R.recon]
     ];
     if(fmt==='docx'){
       let x=docTitle(title, sub); x+=docP('Filtrlar: '+R.filt.map(f=>f[0]+' — '+f[1]).join('; '),{noIndent:true});

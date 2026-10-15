@@ -5152,8 +5152,15 @@ function dbStacked(id, cats, series, opts){
     tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox(),formatter:ps=>{const tot=ps.reduce((s,p)=>s+(p.value||0),0); return `<b>${ps[0].axisValueLabel}</b><br/>`+ps.filter(p=>p.value).map(p=>`${p.marker}${p.seriesName}: <b>${fmtNum(p.value)}</b> (${fmtPct(dbPct(p.value,tot))})`).join('<br/>')+`<br/>Jami: <b>${fmtNum(tot)}</b> ${opts.unit||''}`;}},
     legend:{top:0,textStyle:{color:C.text2,fontSize:11},itemWidth:10,itemHeight:10},
     xAxis: horizontal?valAxis:catAxis, yAxis: horizontal?catAxis:valAxis,
-    series:series.map(s=>({name:s.name,type:'bar',stack:'t',barMaxWidth:horizontal?22:40,itemStyle:{color:s.color},emphasis:{focus:'series'},data:s.data,
-      label:opts.labels?{show:true,color:'#fff',fontSize:10,formatter:p=>p.value||''}:{show:false}}))
+    series:series.map(s=>({name:s.name,type:opts.line?'line':'bar',stack:(opts.grouped&&!opts.line)?undefined:'t',
+      barMaxWidth:opts.grouped?(horizontal?14:26):(horizontal?22:40),barGap:opts.grouped?'15%':undefined,
+      symbol:opts.line?'circle':undefined,symbolSize:opts.line?8:undefined,smooth:false,lineStyle:opts.line?{width:2.5}:undefined,
+      itemStyle:{color:s.color},emphasis:{focus:'series'},data:s.data,
+      label:opts.labels
+        ? (opts.grouped||opts.line
+            ? {show:true,position:horizontal?'right':'top',color:cssVar('--c-text'),fontSize:10,fontWeight:'bold',formatter:p=>p.value||''}
+            : {show:true,color:'#fff',fontSize:10,formatter:p=>p.value||''})
+        : {show:false}}))
   });
   if(c && opts.onClick){ c.off('click'); c.on('click',p=>opts.onClick(cats[p.dataIndex], p.seriesName)); }
   return c;
@@ -5199,7 +5206,7 @@ function dbRenderC(D){
   const stSeries = ['active','soon','overdue','progress','nodata'].map(s=>({name:DB_INST_LABEL(s),color:DB_INST_COL(s),data:regs.map(rg=>dbCount(I,r=>r.region===rg&&r.status===s))}));
   dbStacked('dbC3', regs.map(DB_REGION_SHORT), stSeries, {rotate:28,unit:'ta tashkilot',onClick:(cat)=>{ const i=regs.map(DB_REGION_SHORT).indexOf(cat); if(i>=0) dbSet('region',regs[i]); }});
   const eduCats = eduKeys.map(DB_EDU_LABEL);
-  dbStacked('dbC4', eduCats, ['active','soon','overdue','progress','nodata'].map(s=>({name:DB_INST_LABEL(s),color:DB_INST_COL(s),data:eduKeys.map(k=>dbCount(I,r=>r.edu===k&&r.status===s))})), {horizontal:true,unit:'ta tashkilot',labels:true,onClick:(cat)=>{ const e=DB_EDU.find(x=>x.label===cat); if(e) dbSet('edu',e.k); }});
+  dbStacked('dbC4', eduCats, ['active','soon','overdue','progress','nodata'].map(s=>({name:DB_INST_LABEL(s),color:DB_INST_COL(s),data:eduKeys.map(k=>dbCount(I,r=>r.edu===k&&r.status===s))})), {horizontal:true,grouped:true,unit:'ta tashkilot',labels:true,onClick:(cat)=>{ const e=DB_EDU.find(x=>x.label===cat); if(e) dbSet('edu',e.k); }});
 }
 /* ---- D ---- */
 function dbRenderD1(D){
@@ -5209,7 +5216,7 @@ function dbRenderD1(D){
   if(g==='edu') series = DB_EDU.map((e,i)=>({name:e.label,color:[C.primary,C.primary2,'#84cc16',C.yellow,C.orange][i],data:years.map(y=>dbCount(I,r=>r.dlYear===y&&r.edu===e.k&&r.status!=='closed'))}));
   else if(g==='own') series = DB_OWN.map((o,i)=>({name:o,color:[C.primary,C.primary2,C.orange][i],data:years.map(y=>dbCount(I,r=>r.dlYear===y&&r.own===o&&r.status!=='closed'))}));
   else series = [['active','Kutilmoqda (amalda)'],['soon','Muddati yaqin'],['overdue','Muddati oʻtgan'],['progress','Jarayonda']].map(([s,n])=>({name:n,color:DB_INST_COL(s),data:years.map(y=>dbCount(I,r=>r.dlYear===y&&r.status===s))}));
-  dbStacked('dbD1', years.map(String), series, {unit:'ta tashkilot',labels:true,onClick:(cat)=>dbOpenInst('timeline', dbInstParams({}))});
+  dbStacked('dbD1', years.map(String), series, {line:true,unit:'ta tashkilot',labels:true,onClick:(cat)=>dbOpenInst('timeline', dbInstParams({}))});   // markerli, toʻplanuvchi chiziqli grafik
 }
 function dbRenderD4(D){
   const list = D.I.filter(r=>r.days!=null&&r.days>=0&&r.status!=='progress').sort((a,b)=>a.days-b.days).slice(0,12);
@@ -5221,7 +5228,7 @@ function dbRenderD4(D){
 function dbRenderE(D){
   const {K}=D, ref=dbState.ref;
   const eduKeys = DB_EDU.map(e=>e.k).filter(k=>K.some(r=>dbEduKey(r.edu)===k));
-  dbStacked('dbE2', eduKeys.map(DB_EDU_LABEL), K_ORDER.map(s=>({name:K_STAGE[s].label,color:colOf(K_STAGE[s].col),data:eduKeys.map(k=>dbCount(K,r=>dbEduKey(r.edu)===k&&kStageOf(r,ref)===s))})), {unit:'ta ariza',labels:true,rotate:eduKeys.length>3?12:0,onClick:(cat)=>{ const e=DB_EDU.find(x=>x.label===cat); if(e) dbSet('edu',e.k); }});
+  dbStacked('dbE2', eduKeys.map(DB_EDU_LABEL), K_ORDER.map(s=>({name:K_STAGE[s].label,color:colOf(K_STAGE[s].col),data:eduKeys.map(k=>dbCount(K,r=>dbEduKey(r.edu)===k&&kStageOf(r,ref)===s))})), {grouped:true,unit:'ta ariza',labels:true,rotate:eduKeys.length>3?12:0,onClick:(cat)=>{ const e=DB_EDU.find(x=>x.label===cat); if(e) dbSet('edu',e.k); }});
   const note=$('#dbENote'); if(dbState.region||dbState.status){ note.style.display=''; note.innerHTML='<span class="db-na">⚠ Hudud va institutsional holat filtrlari kompleks arizalarga qoʻllanmaydi</span>'; } else note.style.display='none';
 }
 /* ---- F ---- */

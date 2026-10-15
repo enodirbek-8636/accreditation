@@ -613,17 +613,31 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="nav-item" data-target="dsec-maxsus"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></span>Maxsus akkreditatsiya</button>
   </nav>
   </div>
-  <div class="mode-group no-sub" data-mode="tashkilot">
+  <div class="mode-group" data-mode="tashkilot">
   <button class="mode-btn" data-mode="tashkilot" role="tab" aria-selected="false">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 10h16M5 10v11M19 10v11M9 10v11M15 10v11M12 3 3 7.5h18L12 3Z"/></svg>
     Taʼlim tashkilotlari
   </button>
+  <nav class="section-nav embed-nav" aria-label="Taʼlim tashkilotlari boʻlimlari">
+    <button class="nav-item active" data-level="">Barcha taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="oliy ta'lim">Oliy taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="O'rta maxsus">Oʻrta maxsus taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="kasbiy ta'lim">Kasbiy taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="kadrlarni qayta tayyorlash va ularning malakasini oshirish">Kadrlarni qayta tayyorlash va ularning malakasini oshirish taʼlim tashkilotlari</button>
+  </nav>
   </div>
-  <div class="mode-group no-sub" data-mode="grafik">
+  <div class="mode-group" data-mode="grafik">
   <button class="mode-btn" data-mode="grafik" role="tab" aria-selected="false">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
     Akkreditatsiya grafigi
   </button>
+  <nav class="section-nav embed-nav" aria-label="Akkreditatsiya grafigi boʻlimlari">
+    <button class="nav-item active" data-level="">Barcha taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="oliy ta'lim">Oliy taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="O'rta maxsus">Oʻrta maxsus taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="kasbiy ta'lim">Kasbiy taʼlim tashkilotlari</button>
+    <button class="nav-item" data-level="kadrlarni qayta tayyorlash va ularning malakasini oshirish">Kadrlarni qayta tayyorlash va ularning malakasini oshirish taʼlim tashkilotlari</button>
+  </nav>
   </div>
   <div class="mode-group" data-mode="kompleks">
   <button class="mode-btn" data-mode="kompleks" role="tab" aria-selected="false">
@@ -3185,11 +3199,30 @@ const MODE_PANELS = {dashboard:'#modeDashboard', maxsus:'#modeMaxsus', kompleks:
 const EMBED_MODES = {tashkilot:'#frameTashkilot', grafik:'#frameGrafik'};
 const EMBED_VER = '20261015-3';   // institutional.html yangilanganda bu qiymatni oʻzgartiring (kesh yangilanadi)
 // embed iframe'lar: faqat birinchi ochilganda yuklanadi, mavzu asosiy platforma bilan sinxron
+/* ichki boʻlimlar (taʼlim darajasi boʻyicha): tanlangan daraja ichki oynaga f_level filtri sifatida uzatiladi */
+const embedLevel = {tashkilot:'', grafik:''};
+function embedSrc(m, extra){
+  // &v= — kesh belgisi: har bir nashrda EMBED_VER yangilanadi, shunda brauzer eski institutional.html ni koʻrsatmaydi
+  const q = new URLSearchParams(Object.assign({embed:'1', page: m==='grafik'?'timeline':'orgs', lang:'ul', theme: state.theme==='dark'?'dark':'light', v: EMBED_VER}, extra||{}));
+  if(embedLevel[m] && !q.get('f_level')) q.set('f_level', embedLevel[m]);
+  return 'institutional.html?' + q.toString();
+}
+function syncEmbedNav(m, level){
+  embedLevel[m] = level || '';
+  $$(`.mode-group[data-mode="${m}"] .embed-nav .nav-item`).forEach(b=>b.classList.toggle('active', (b.dataset.level||'')===embedLevel[m]));
+}
+function initEmbedNavs(){
+  $$('.embed-nav .nav-item').forEach(b=>b.onclick=()=>{
+    const m = b.closest('.mode-group').dataset.mode;
+    syncEmbedNav(m, b.dataset.level||'');
+    const f = $(EMBED_MODES[m]); if(f) f.src = embedSrc(m) + '&r=' + Date.now();   // faqat tanlangan darajadagi tashkilotlar
+    if(state.mode!==m) switchMode(m); else window.scrollTo({top:0,behavior:'auto'});
+  });
+}
 function loadEmbed(m){
   const f = EMBED_MODES[m] && $(EMBED_MODES[m]);
   if(!f) return;
-  // &v= — kesh belgisi: har bir nashrda EMBED_VER yangilanadi, shunda brauzer eski institutional.html ni koʻrsatmaydi
-  if(!f.src){ f.src = f.dataset.src + '&theme=' + (state.theme==='dark'?'dark':'light') + '&v=' + EMBED_VER; }
+  if(!f.src){ f.src = embedSrc(m); }
   else postEmbedTheme();
 }
 function postEmbedTheme(){
@@ -5050,10 +5083,15 @@ function dbCtx(){
 }
 /* ---- moduldan modulga oʻtish (drill-down) ---- */
 function dbOpenInst(page, params){
-  const f = $(page==='timeline' ? '#frameGrafik' : '#frameTashkilot');
-  const q = new URLSearchParams(Object.assign({embed:'1', page, lang:'ul', theme:state.theme==='dark'?'dark':'light', v:EMBED_VER+'-'+Date.now()}, params||{}));
-  f.src = 'institutional.html?' + q.toString();
-  switchMode(page==='timeline' ? 'grafik' : 'tashkilot');
+  const m = page==='timeline' ? 'grafik' : 'tashkilot';
+  const f = $(EMBED_MODES[m]);
+  const p = Object.assign({}, params||{});
+  // Dashboard'dan uzatilgan daraja filtri ichki boʻlim tugmasiga ham aks etadi (faqat bitta daraja boʻlsa)
+  const lv = p.f_level && !p.f_level.includes(',') ? p.f_level : '';
+  syncEmbedNav(m, $$(`.mode-group[data-mode="${m}"] .embed-nav .nav-item`).some(b=>(b.dataset.level||'')===lv) ? lv : '');
+  if(!lv) delete p.f_level; else p.f_level = lv;
+  f.src = embedSrc(m, p) + '&r=' + Date.now();
+  switchMode(m);
 }
 function dbInstParams(extra){
   const p = Object.assign({}, extra||{});
@@ -5418,6 +5456,7 @@ function init(){
   initSectionNav('sectionNavK');
   initSectionNav('sectionNavH');
   initSectionNav('sectionNavD');
+  initEmbedNavs();
   dbInit();
   initModeSwitch();
   $$('[data-png]').forEach(b=>b.onclick=()=>exportChartPNG(b.dataset.png));

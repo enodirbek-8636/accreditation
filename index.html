@@ -606,7 +606,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="nav-item active" data-target="dsec-top"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg></span>Asosiy koʻrsatkichlar</button>
     <button class="nav-item" data-target="dsec-overview"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></span>Milliy koʻrinish</button>
     <button class="nav-item" data-target="dsec-orgs"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M4 10h16M5 10v11M19 10v11M9 10v11M15 10v11M12 3 3 7.5h18L12 3Z"/></svg></span>Taʼlim tashkilotlari</button>
-    <button class="nav-item" data-target="dsec-plan"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>Grafik va prognoz</button>
     <button class="nav-item" data-target="dsec-kompleks"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v7l-4 2v-9L3 4z"/></svg></span>Kompleks akkreditatsiya</button>
     <button class="nav-item" data-target="dsec-maxsus"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z"/></svg></span>Maxsus akkreditatsiya</button>
   </nav>
@@ -714,18 +713,12 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="panel"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha akkreditatsiya holati</h3><div class="pdesc">Har bir taʼlim turi ichida holatlar taqsimoti</div></div></div><div class="chart" id="dbC4" style="height:360px"></div></div>
   </div>
 
-  <!-- D. Grafik va prognoz -->
-  <div class="section-title" id="dsec-plan">Akkreditatsiya grafigi va prognoz</div>
+  <!-- E. Kompleks + eng yaqin institutsional muddatlar -->
+  <div class="section-title" id="dsec-kompleks">Kompleks akkreditatsiya monitoringi va eng yaqin muddatlar</div>
   <div class="db-grid-21">
-    <div class="panel"><div class="panel-head"><div><h3>Yillik akkreditatsiya grafigi</h3><div class="pdesc">Hisoblangan muddati tanlangan yildan boshlab 5 yil ichida tugaydigan tashkilotlar</div></div>
-      <select class="db-sel" id="dbD1Group"><option value="status">Holat boʻyicha</option><option value="edu">Taʼlim turi boʻyicha</option><option value="own">Mulkchilik boʻyicha</option></select></div><div class="chart" id="dbD1" style="height:340px"></div>
-      <div class="db-note">Manbada akkreditatsiya tadbirining «bajarilgan» sanasi alohida qayd etilmaydi; shuning uchun yakunlangan tadbirlar oʻtgan davr uchun koʻrsatilmaydi, muddati oʻtganlar «Muddati oʻtgan» sifatida ajratiladi.</div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Eng yaqin muddatlar</h3><div class="pdesc">Qatorga bosib tashkilot kartochkasini oching</div></div></div><div class="table-scroll" style="max-height:380px;border:none"><table class="db-table" id="dbD4"></table></div></div>
+    <div class="panel" id="dbPanelE2"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha kompleks arizalar</h3><div class="pdesc">Joriy bosqich kesimida · birlik: ariza</div></div></div><div class="chart" id="dbE2" style="height:380px"></div><div class="db-note" id="dbENote" style="display:none"></div></div>
+    <div class="panel" id="dbPanelD4"><div class="panel-head"><div><h3>Eng yaqin muddatlar</h3><div class="pdesc">Institutsional akkreditatsiya · qatorga bosib tashkilot kartochkasini oching</div></div></div><div class="table-scroll" style="max-height:380px;border:none"><table class="db-table" id="dbD4"></table></div></div>
   </div>
-
-  <!-- E. Kompleks -->
-  <div class="section-title" id="dsec-kompleks">Kompleks davlat akkreditatsiyasi monitoringi</div>
-  <div class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h3>Taʼlim turi boʻyicha kompleks arizalar</h3><div class="pdesc">Joriy bosqich kesimida · birlik: ariza</div></div></div><div class="chart" id="dbE2" style="height:320px"></div><div class="db-note" id="dbENote" style="display:none"></div></div>
 
   <!-- F. Maxsus -->
   <div class="section-title" id="dsec-maxsus">Maxsus davlat akkreditatsiyasi natijalari</div>
@@ -5030,7 +5023,7 @@ function dbInit(){
   $('#dbClear').onclick=()=>{ Object.assign(dbState,{ref:todayISO(),year:yNow,edu:'',region:'',own:'',acc:'',status:''}); _dbInstCache={}; dbSyncUI(); dbRender(); toast('Dashboard filtrlari tozalandi'); };
   $('#dbRefresh').onclick=()=>{ _dbInstCache={}; _dbAppOwn=null; dbRender(); toast('Dashboard yangilandi'); };
   $('#dbWord').onclick=()=>dbExport('docx'); $('#dbPdf').onclick=()=>dbExport('pdf'); $('#dbExcel').onclick=()=>dbExport('xlsx');
-  $('#dbD1Group').onchange=()=>dbRenderD1(dbCompute());
+  const d1g=$('#dbD1Group'); if(d1g) d1g.onchange=()=>dbRenderD1(dbCompute());
   $$('[data-dbgo]').forEach(b=>b.onclick=()=>dbGo(b.dataset.dbgo));
   window.addEventListener('resize', ()=>{ if(state.mode==='dashboard') Object.values(dbCharts).forEach(c=>c&&!c.isDisposed()&&c.resize()); });
 }
@@ -5328,11 +5321,14 @@ function dbRender(){
   dbCtx(); dbRenderKPI(D);
   const show = (sel, on) => $$(sel).forEach(el=>el.style.display=on?'':'none');
   const acc=dbState.acc;
-  show('#dsec-orgs, #dsec-plan', !acc||acc==='inst'); show('#dsec-kompleks', !acc||acc==='kompleks'); show('#dsec-maxsus', !acc||acc==='maxsus');
   // boʻlim paneli koʻrinishi: section-title dan keyingi elementlar keyingi section-title gacha
-  ['dsec-orgs','dsec-plan','dsec-kompleks','dsec-maxsus'].forEach(id=>{ const on = !acc || (id==='dsec-kompleks'?acc==='kompleks': id==='dsec-maxsus'?acc==='maxsus': acc==='inst'); let el=document.getElementById(id); if(!el) return; el.style.display=on?'':'none'; el=el.nextElementSibling; while(el && !el.classList.contains('section-title')){ el.style.display=on?'':'none'; el=el.nextElementSibling; } });
-  dbRenderB(D); if(!acc||acc==='inst'){ dbRenderC(D); dbRenderD1(D); dbRenderD4(D); }
-  if(!acc||acc==='kompleks') dbRenderE(D); if(!acc||acc==='maxsus') dbRenderF(D);
+  ['dsec-orgs','dsec-maxsus'].forEach(id=>{ const on = !acc || (id==='dsec-maxsus'?acc==='maxsus': acc==='inst'); let el=document.getElementById(id); if(!el) return; el.style.display=on?'':'none'; el=el.nextElementSibling; while(el && !el.classList.contains('section-title')){ el.style.display=on?'':'none'; el=el.nextElementSibling; } });
+  // aralash boʻlim: kompleks arizalar (kompleks) + eng yaqin muddatlar (institutsional)
+  const showE2 = !acc||acc==='kompleks', showD4 = !acc||acc==='inst';
+  show('#dbPanelE2', showE2); show('#dbPanelD4', showD4); show('#dsec-kompleks', showE2||showD4);
+  const mixGrid = $('#dbPanelE2') && $('#dbPanelE2').parentElement; if(mixGrid){ mixGrid.style.display = (showE2||showD4)?'':'none'; mixGrid.style.gridTemplateColumns = (showE2&&showD4)?'':'1fr'; }
+  dbRenderB(D); if(!acc||acc==='inst'){ dbRenderC(D); dbRenderD4(D); }
+  if(showE2) dbRenderE(D); if(!acc||acc==='maxsus') dbRenderF(D);
   const recon = dbReconcile(); const bad = recon.filter(r=>!r[4]); if(bad.length) console.warn('Dashboard moslik: farq', bad);   // konsolga: manba bilan moslik
   setTimeout(()=>Object.values(dbCharts).forEach(c=>c&&!c.isDisposed()&&c.resize()),80);
 }

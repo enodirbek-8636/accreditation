@@ -2121,7 +2121,7 @@ function filteredPrograms(){
   let list = progScope();
   if(pFilter.edu) list = list.filter(p=>p.edu===pFilter.edu);
   if(pFilter.own) list = list.filter(p=>p.own===pFilter.own);
-  if(pFilter.lvl) list = list.filter(p=>p.lvl===pFilter.lvl);
+  if(pFilter.lvl) list = list.filter(p=>(p.lvl||'Koʻrsatilmagan')===pFilter.lvl);
   if(pFilter.status) list = list.filter(p=>p.status===pFilter.status);
   if(pFilter.cid) list = list.filter(p=>p.cid==pFilter.cid);
   if(pFilter.search){ const q=pFilter.search.toLowerCase(); list = list.filter(p=>p.hei.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)); }
@@ -2145,17 +2145,26 @@ function stackedBarOption(map, opts={}){
   if(opts.limit) cats = cats.slice(0, opts.limit);
   cats.reverse(); // katta tepada
   const short = opts.short || (s=>s);
+  const grand = Object.values(map).reduce((s,m)=>s+m.total,0);
+  const totals = cats.map(c=>map[c].total);
+  const maxTot = Math.max(...totals, 1);
+  // segment ichidagi raqam faqat yetarli kenglikda koʻrsatiladi
+  const segLabel = {show:true,color:'#fff',fontSize:10.5,fontWeight:'bold',formatter:p=>p.value>=maxTot*0.035?p.value:''};
   return {
     textStyle:baseTextStyle(),
-    grid:{left:8,right:26,top:34,bottom:8,containLabel:true},
+    grid:{left:8,right:96,top:34,bottom:8,containLabel:true},
     legend:{data:['Jarayonda','Oʻtgan','Oʻtmagan'],top:0,textStyle:{color:cssVar('--c-text-2')}},
-    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox()},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox(),
+      formatter:ps=>{const i=ps[0].dataIndex, tot=totals[i]; return `<b>${cats[i]}</b><br/>`+ps.filter(p=>p.seriesName!=='_t').map(p=>`${p.marker}${p.seriesName}: <b>${fmtNum(p.value)}</b> (${fmtPct(safeDiv(p.value,tot)*100)})`).join('<br/>')+`<br/>Jami: <b>${fmtNum(tot)}</b> ta dastur · ${fmtPct(safeDiv(tot,grand)*100)}`;}},
     xAxis:{type:'value',...axisStyle()},
     yAxis:{type:'category',data:cats.map(short),axisLabel:{color:cssVar('--c-text-2'),fontSize:11,width:opts.labelW||140,overflow:'truncate'},axisLine:{lineStyle:{color:cssVar('--border')}}},
     series:[
-      {name:'Jarayonda',type:'bar',stack:'s',data:cats.map(c=>map[c].inProgress),itemStyle:{color:cssVar('--c-progress')}},
-      {name:'Oʻtgan',type:'bar',stack:'s',data:cats.map(c=>map[c].passed),itemStyle:{color:cssVar('--c-passed')}},
-      {name:'Oʻtmagan',type:'bar',stack:'s',data:cats.map(c=>map[c].failed),itemStyle:{color:cssVar('--c-failed'),borderRadius:[0,4,4,0]}}
+      {name:'Jarayonda',type:'bar',stack:'s',data:cats.map(c=>map[c].inProgress),itemStyle:{color:cssVar('--c-progress')},label:segLabel},
+      {name:'Oʻtgan',type:'bar',stack:'s',data:cats.map(c=>map[c].passed),itemStyle:{color:cssVar('--c-passed')},label:segLabel},
+      {name:'Oʻtmagan',type:'bar',stack:'s',data:cats.map(c=>map[c].failed),itemStyle:{color:cssVar('--c-failed'),borderRadius:[0,4,4,0]},label:segLabel},
+      /* jami va ulush — stek oxirida (koʻrinmas yordamchi seriya) */
+      {name:'_t',type:'bar',stack:'s',silent:true,itemStyle:{color:'transparent'},tooltip:{show:false},data:cats.map(()=>0),
+        label:{show:true,position:'right',color:cssVar('--c-text'),fontWeight:'bold',fontSize:11.5,formatter:p=>`${fmtNum(totals[p.dataIndex])} · ${fmtPct(safeDiv(totals[p.dataIndex],grand)*100)}`}}
     ],
     _cats:cats
   };
@@ -2196,8 +2205,8 @@ function renderDimensionCharts(){
   charts.ownChart.off('click');
   charts.ownChart.on('click', p=>{ const c=p.data._raw; pFilter.own = pFilter.own===c?'':c; pFilter.page=1; syncProgFilterUI(); renderProgramTable(); });
   // Daraja
-  const lvlMap = stackByKey(scope, p=>p.lvl);
-  const lvlOpt = stackedBarOption(lvlMap, {labelW:130});
+  const lvlMap = stackByKey(scope, p=>p.lvl||'Koʻrsatilmagan');   // jadvalda darajasi boʻsh dastur alohida qatorda
+  const lvlOpt = stackedBarOption(lvlMap, {labelW:210});
   charts.lvlChart.setOption(lvlOpt, true);
   bindDimClick(charts.lvlChart, lvlOpt._cats, 'lvl');
   // Bilim sohasi

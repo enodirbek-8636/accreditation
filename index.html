@@ -5082,8 +5082,6 @@ function dbRenderKPI(D){
       tip:'Institutsional reyestrdagi noyob tashkilotlar soni (T/r boʻyicha). Birlik: tashkilot.', go:'inst-all'},
     {label:'Akkreditatsiyadan oʻtgan tashkilotlar', v:inst.active, ic:'check', col:C.green, sub:fmtPct(dbPct(inst.active,inst.total))+' · amaldagi akkreditatsiya', pct:dbPct(inst.active,inst.total),
       tip:'Hisoblangan muddatigacha 365 kundan koʻp qolgan tashkilotlar (muddat: qayta tashkil +2 yil, aks holda akkreditatsiya/tashkil etish +5 yil).', go:'inst-active'},
-    {label:'Akkreditatsiya muddati yaqinlashgan', v:inst.soon, ic:'clock', col:C.yellow, sub:fmtPct(dbPct(inst.soon,inst.total))+' · 0–365 kun qoldi', pct:dbPct(inst.soon,inst.total),
-      tip:'Muddatigacha 0–365 kun qolgan va ariza bermagan tashkilotlar.', go:'inst-soon'},
     {label:'Muddati oʻtgan tashkilotlar', v:inst.overdue, ic:'x', col:C.red, sub:fmtPct(dbPct(inst.overdue,inst.total))+' · hisoblangan muddat oʻtgan', pct:dbPct(inst.overdue,inst.total),
       tip:'Hisoblangan muddati hisobot sanasidan oldin tugagan va ariza bermagan tashkilotlar.', go:'inst-overdue'},
     {label:'Kompleks akkreditatsiya arizalari', v:komp.total, ic:'app', col:C.primary, sub:`${komp.orgs} ta tashkilot`, pct:100,
@@ -5336,7 +5334,7 @@ function dbRender(){
 function dbReportData(){
   const D=_dbLast||dbCompute(), {inst,komp,mx}=D;
   const filt=[['Hisobot sanasi',fmtDate(dbState.ref)],['Yil',String(dbState.year)],['Taʼlim turi',dbState.edu?DB_EDU_LABEL(dbState.edu):'Barchasi'],['Hudud',dbState.region?DB_REGION_LABEL(dbState.region):'Barchasi'],['Mulkchilik',dbState.own||'Barchasi'],['Akkreditatsiya turi',dbState.acc||'Barchasi'],['Holat',dbState.status?DB_INST_LABEL(dbState.status):'Barchasi']];
-  const kpi=[['Taʼlim tashkilotlari',inst.total,'tashkilot'],['Akkreditatsiyadan oʻtgan (amalda)',inst.active,'tashkilot'],['Muddati yaqinlashgan',inst.soon,'tashkilot'],['Muddati oʻtgan',inst.overdue,'tashkilot'],
+  const kpi=[['Taʼlim tashkilotlari',inst.total,'tashkilot'],['Akkreditatsiyadan oʻtgan (amalda)',inst.active,'tashkilot'],['Muddati oʻtgan',inst.overdue,'tashkilot'],
     ['Kompleks arizalar',komp.total,'ariza'],['Kompleks — jarayonda',komp.inProgress,'ariza'],['Maxsus dasturlar',mx.progs,'dastur'],['Maxsus — yakunlangan (oʻtgan + oʻtmagan)',mx.passed+mx.failed,'dastur'],['Maxsus — oʻtgan',mx.passed,'dastur'],['Maxsus — oʻtmagan',mx.failed,'dastur'],['Maxsus — jarayonda',mx.inProgress,'dastur']];
   const regs=DB_REGIONS.map(r=>[r[1], ...['active','soon','overdue','progress','nodata'].map(s=>dbCount(D.I,x=>x.region===r[0]&&x.status===s)), dbCount(D.I,x=>x.region===r[0])]);
   const edus=DB_EDU.map(e=>[e.label, dbCount(D.I,x=>x.edu===e.k), dbCount(D.I,x=>x.edu===e.k&&x.status==='active'), dbCount(D.I,x=>x.edu===e.k&&x.status==='overdue'), dbCount(D.K,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k&&x.status==='passed')]);

@@ -5097,8 +5097,8 @@ function dbRenderKPI(D){
       tip:'Joyiga chiqish hali amalga oshmagan arizalar (sana kelajakda yoki belgilanmagan).', go:'komp-progress'},
     {label:'Maxsus akkreditatsiya dasturlari', v:mx.progs, ic:'book', col:C.primary, sub:`${mx.apps} ta ariza · ${mx.orgs} ta tashkilot`, pct:100,
       tip:'Maxsus akkreditatsiyaga taqdim etilgan taʼlim dasturlari. Birlik: dastur.', go:'mx-all'},
-    {label:'Maxsus akkreditatsiyadan oʻtgan', v:mx.passed, ic:'award', col:C.green, sub:fmtPct(dbPct(mx.passed,mx.progs))+' · dasturlar', pct:dbPct(mx.passed,mx.progs),
-      tip:'Komissiya qarori bilan akkreditatsiyadan oʻtgan dasturlar.', go:'mx-passed'},
+    {label:'Maxsus akkreditatsiya yakunlangan', v:mx.passed+mx.failed, ic:'award', col:C.green, sub:`${fmtPct(dbPct(mx.passed+mx.failed,mx.progs))} · oʻtgan ${fmtNum(mx.passed)} · oʻtmagan ${fmtNum(mx.failed)}`, pct:dbPct(mx.passed+mx.failed,mx.progs),
+      tip:'Komissiya qarori qabul qilingan dasturlar (akkreditatsiyadan oʻtgan + oʻtmagan). Birlik: dastur.', go:'mx-all'},
     {label:'Maxsus — jarayonda', v:mx.inProgress, ic:'loader', col:C.yellow, sub:`${fmtPct(dbPct(mx.inProgress,mx.progs))} · ${mx.activeApps} ta faol ariza`, pct:dbPct(mx.inProgress,mx.progs),
       tip:'Hali komissiya qarori qabul qilinmagan dasturlar.', go:'mx-progress'}
   ];
@@ -5332,7 +5332,7 @@ function dbReportData(){
   const D=_dbLast||dbCompute(), {inst,komp,mx}=D;
   const filt=[['Hisobot sanasi',fmtDate(dbState.ref)],['Yil',String(dbState.year)],['Taʼlim turi',dbState.edu?DB_EDU_LABEL(dbState.edu):'Barchasi'],['Hudud',dbState.region?DB_REGION_LABEL(dbState.region):'Barchasi'],['Mulkchilik',dbState.own||'Barchasi'],['Akkreditatsiya turi',dbState.acc||'Barchasi'],['Holat',dbState.status?DB_INST_LABEL(dbState.status):'Barchasi']];
   const kpi=[['Taʼlim tashkilotlari',inst.total,'tashkilot'],['Akkreditatsiyadan oʻtgan (amalda)',inst.active,'tashkilot'],['Muddati yaqinlashgan',inst.soon,'tashkilot'],['Muddati oʻtgan',inst.overdue,'tashkilot'],
-    ['Kompleks arizalar',komp.total,'ariza'],['Kompleks — jarayonda',komp.inProgress,'ariza'],['Maxsus dasturlar',mx.progs,'dastur'],['Maxsus — oʻtgan',mx.passed,'dastur'],['Maxsus — jarayonda',mx.inProgress,'dastur']];
+    ['Kompleks arizalar',komp.total,'ariza'],['Kompleks — jarayonda',komp.inProgress,'ariza'],['Maxsus dasturlar',mx.progs,'dastur'],['Maxsus — yakunlangan (oʻtgan + oʻtmagan)',mx.passed+mx.failed,'dastur'],['Maxsus — oʻtgan',mx.passed,'dastur'],['Maxsus — oʻtmagan',mx.failed,'dastur'],['Maxsus — jarayonda',mx.inProgress,'dastur']];
   const regs=DB_REGIONS.map(r=>[r[1], ...['active','soon','overdue','progress','nodata'].map(s=>dbCount(D.I,x=>x.region===r[0]&&x.status===s)), dbCount(D.I,x=>x.region===r[0])]);
   const edus=DB_EDU.map(e=>[e.label, dbCount(D.I,x=>x.edu===e.k), dbCount(D.I,x=>x.edu===e.k&&x.status==='active'), dbCount(D.I,x=>x.edu===e.k&&x.status==='overdue'), dbCount(D.K,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k), dbCount(D.P,x=>dbEduKey(x.edu)===e.k&&x.status==='passed')]);
   const years=Array.from({length:5},(_,i)=>dbState.year+i).map(y=>[String(y), ...['active','soon','overdue','progress'].map(s=>dbCount(D.I,x=>x.dlYear===y&&x.status===s)), dbCount(D.I,x=>x.dlYear===y&&x.status!=='closed')]);

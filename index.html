@@ -737,7 +737,9 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 
 
 <!-- ===================== FILTERS ===================== -->
-<div class="filters" id="sec-top">
+<div id="sec-top"></div>
+<!-- koordinator filtrlari paneli platformadan olib tashlangan (JS bogʻlanishlari uchun yashirin holda saqlanadi) -->
+<div class="filters" id="coordFilters" style="display:none">
   <div class="f-group">
     <label>Koordinator</label>
     <select id="coordSelect"></select>
@@ -835,11 +837,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="mini-btn" data-png="stackChart"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/></svg>PNG</button>
   </div>
   <div class="chart tall" id="stackChart"></div>
-</div>
-<!-- 9: Koordinatorlar reytingi -->
-<div class="panel" style="margin-bottom:18px">
-  <div class="panel-head"><div><h3>Koordinatorlar reytingi</h3><div class="pdesc">Natijadorlik balli boʻyicha</div></div></div>
-  <div class="rank-list" id="rankList"></div>
 </div>
 
 <!-- ===================== PROGRAM DRILL-DOWN ===================== -->
@@ -1505,6 +1502,7 @@ function shortName(n){
 
 /* ============ 8. REYTING ROʻYXATI ============ */
 function renderRankList(list){
+  if(!$('#rankList')) return;   // reyting paneli platformadan olib tashlangan
   const rmap = rankMap();
   $('#rankList').innerHTML = list.map(m=>{
     const pos = m.hasLoad ? rmap[m.id] : '—';

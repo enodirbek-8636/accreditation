@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="uz-Latn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ACL testlari</title>
+<style>body{font-family:Inter,Segoe UI,Arial,sans-serif;padding:20px;max-width:900px;margin:auto;color:#0f172a}h1{font-size:20px}.ok{color:#15803d}.fail{color:#b91c1c;font-weight:700}li{margin:4px 0;font-size:14px}pre{background:#f1f5f9;padding:8px;border-radius:8px;font-size:12px}</style></head>
+<body>
+<h1>NQAAE — menyu koʻrinishi (ACL) avtomatik testlari</h1>
+<p>Sof mantiq testlari (<code>acl-core.js</code>). Backend (Supabase) bilan bogʻliq stsenariylar <code>docs/ADMIN.md</code> dagi roʻyxat boʻyicha qoʻlda tekshiriladi.</p>
+<ul id="out"></ul><pre id="sum"></pre>
+<script src="../acl-core.js"></script>
+<script>
+const out=document.getElementById('out'); let pass=0, fail=0;
+function t(name, fn){ try{ const r=fn(); if(r===true){ pass++; out.insertAdjacentHTML('beforeend',`<li class="ok">✔ ${name}</li>`); } else { fail++; out.insertAdjacentHTML('beforeend',`<li class="fail">✘ ${name} — ${r}</li>`); } }catch(e){ fail++; out.insertAdjacentHTML('beforeend',`<li class="fail">✘ ${name} — ${e.message}</li>`); } }
+// reyestr: haqiqiy platforma tuzilmasiga mos
+const items=[
+ ['dashboard',null,'main_tab',0],['tashkilot',null,'main_tab',1],['grafik',null,'main_tab',2],['kompleks',null,'main_tab',3],['maxsus',null,'main_tab',4],['xodim',null,'main_tab',5],
+ ['dsec-top','dashboard','sub_tab',0],['dsec-kompleks','dashboard','sub_tab',3],['dsec-maxsus','dashboard','sub_tab',4],
+ ['ksec-top','kompleks','sub_tab',0],['ksec-funnel','kompleks','sub_tab',1],['ksec-result','kompleks','sub_tab',2],['ksec-registry','kompleks','sub_tab',3],
+ ['sec-top','maxsus','sub_tab',0],['sec-main','maxsus','sub_tab',1],['sec-apps','maxsus','sub_tab',2],['sec-registry','maxsus','sub_tab',3],['sec-table','maxsus','sub_tab',4],
+ ['hsec-top','xodim','sub_tab',0],['hsec-registry','xodim','sub_tab',5]
+];
+const REG={list:items.map(a=>({id:a[0],parent:a[1],type:a[2],order:a[3],name:a[0]})),byId:{}}; REG.list.forEach(i=>REG.byId[i.id]=i);
+const C=ACLCore; const empty={version:0,items:{}};
+t('Standart: hamma element koʻrinadi', ()=> REG.list.every(i=>C.effective(empty,REG,i.id)) || 'yoʻq');
+t('Stsenariy A: «Xodimlar dinamikasi» yopiq → modul va reyestr yopiq', ()=>{ const c=C.setVisible(empty,'xodim',false); return !C.effective(c,REG,'xodim') && !C.effective(c,REG,'hsec-registry') && C.effective(c,REG,'hsec-top')===false || 'bola ochiq qoldi'; });
+t('Stsenariy B: Maxsus ochiq, «Dasturlar reyestri» yopiq', ()=>{ const c=C.setVisible(empty,'sec-registry',false); return C.effective(c,REG,'maxsus') && C.effective(c,REG,'sec-main') && !C.effective(c,REG,'sec-registry') || 'xato'; });
+t('Stsenariy C: Kompleks yopilib qayta ochilganda bola sozlamalari saqlanadi', ()=>{ let c=C.setVisible(empty,'ksec-registry',false); c=C.setVisible(c,'kompleks',false); const hiddenAll=!C.effective(c,REG,'ksec-top'); c=C.setVisible(c,'kompleks',true); return hiddenAll && C.effective(c,REG,'ksec-top') && !C.effective(c,REG,'ksec-registry') || 'saqlanmadi'; });
+t('Koʻrinadigan bola yopiq otani chetlab oʻta olmaydi', ()=>{ let c=C.setVisible(empty,'maxsus',false); c=C.setVisible(c,'sec-main',true); return !C.effective(c,REG,'sec-main') || 'chetlab oʻtdi'; });
+t('Birinchi ochiq asosiy boʻlim (dashboard yopiq → tashkilot)', ()=> C.firstVisible(C.setVisible(empty,'dashboard',false),REG)==='tashkilot' || C.firstVisible(C.setVisible(empty,'dashboard',false),REG));
+t('Barchasi yopiq → firstVisible = null (neytral sahifa)', ()=>{ let c=empty; REG.list.filter(i=>i.type==='main_tab').forEach(i=>c=C.setVisible(c,i.id,false)); return C.firstVisible(c,REG)===null || 'null emas'; });
+t('Farq xulosasi: 1 asosiy + 1 ichki yopiladi', ()=>{ let c=C.setVisible(empty,'xodim',false); c=C.setVisible(c,'sec-registry',false); const s=C.summary(empty,c,REG); return s.mainsHidden===1 && s.childrenHidden===1 && s.changes.length===2 || JSON.stringify(s); });
+t('Hisobot doiralari: kompleks yopiq → kompleks eksport cheklanadi, boshqalar ochiq', ()=>{ const s=C.reportScopes(C.setVisible(empty,'kompleks',false),REG); return s.kompleks===false && s.maxsus && s.inst && s.xodim || JSON.stringify(s); });
+t('Institutsional doira: tashkilot yopiq, grafik ochiq → inst hali ochiq (grafik orqali)', ()=> C.reportScopes(C.setVisible(empty,'tashkilot',false),REG).inst===true || 'xato');
+t('Normalizatsiya: v:true yozuvlar olib tashlanadi, v:false saqlanadi', ()=>{ const n=C.normalize({items:{a:{v:true},b:{v:false}}}); return !('a' in n.items) && n.items.b.v===false || JSON.stringify(n); });
+t('equal(): tartibdan qatʼi nazar teng', ()=> C.equal({items:{a:{v:false},b:{v:false}}},{items:{b:{v:false},a:{v:false}}}) || 'teng emas');
+t('setVisible(true) qayta ochish yozuvni olib tashlaydi (idempotent)', ()=>{ const c=C.setVisible(C.setVisible(empty,'maxsus',false),'maxsus',true); return Object.keys(c.items).length===0 || 'qoldi'; });
+document.getElementById('sum').textContent=`Natija: ${pass} oʻtdi, ${fail} xato · ${new Date().toLocaleString()}`;
+</script>
+</body></html>

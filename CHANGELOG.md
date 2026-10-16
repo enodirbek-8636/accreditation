@@ -1,5 +1,19 @@
 # Oʻzgarishlar jurnali — Davlat akkreditatsiyasi monitoringi
 
+## 2026-10-17 — Admin panel va menyu koʻrinishini boshqarish (ACL)
+
+### Qoʻshildi
+- **«Admin kirish»** (sahifa pastida; mobil «⋯» menyusida) — Supabase Auth (email + parol), rol server tomonida (`admin_roles`, `my_role()`), 5 urinishdan soʻng vaqtinchalik blok, sessiya muddati, parolni tiklash. Parollar frontendda saqlanmaydi; backend sozlanmaguncha tugma sozlash eslatmasini koʻrsatadi.
+- **ADMIN PANEL — MENYULARNI BOSHQARISH**: 6 asosiy boʻlim va barcha ichki boʻlimlar/bloklar daraxti (barqaror IDlar), ON/OFF (Ochiq/Yopiq), samarali holat, qidiruv, ochish/yigʻish, Saqlash (qoralama), Foydalanuvchi koʻrinishini tekshirish (eʼlon qilmasdan), Oʻzgarishlarni eʼlon qilish (tasdiq xulosasi, «hammasi yopiq» ogohlantirishi, atomik `publish_config`), Bekor qilish, Oʻzgarishlar tarixi (versiyalar, tiklash, audit).
+- **Nazorat**: navigatsiya + marshrut (`switchMode`, `dbGo`, `dbOpenInst`, `loadEmbed`) + eksport (Word/PDF, Dashboard Word/PDF/Excel, tahliliy hisobotlar) yopiq modullarni chiqarib tashlaydi; yopiq boʻlimdan birinchi ochiq boʻlimga yoʻnaltirish yoki neytral sahifa; admin uchun yopiq boʻlimlar belgilanadi.
+- **Markazlashgan saqlash**: `supabase/schema.sql` (admin_roles, menu_items, menu_config versiyalari, menu_drafts, audit_log, publish_config, datasets + RLS). Barcha qurilmalar bitta eʼlon qilingan konfiguratsiyani oladi; kesh tozalansa ham saqlanadi; realtime yangilanish.
+- Xavfsiz yuklanish: konfiguratsiya kelguncha navigatsiya koʻrsatilmaydi; backend ishlamasa oxirgi eʼlon qilingan nusxa, u ham boʻlmasa yopiq holat va «Qayta urinish».
+- Testlar: `tests/acl-tests.html`; hujjat: `docs/ADMIN.md`.
+
+### Cheklov
+- Maʼlumotlar hozircha statik fayllarda (GitHub Pages) — menyu yopilishi maʼlumot himoyasi emas; haqiqiy himoya uchun `datasets` jadvaliga koʻchirish (2-bosqich) `docs/ADMIN.md` da tavsiflangan.
+- Birinchi joylashtirishda barcha boʻlimlar ochiq (joriy koʻrinish saqlanadi).
+
 ## 2026-10-17 — Mobil va planshet moslashuvi
 
 ### Qoʻshildi (faqat ≤1023 px ekranlar; desktop oʻzgarmagan)

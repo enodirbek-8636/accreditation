@@ -66,6 +66,7 @@ function mountHeader(){
     const p=$('#reportPdfBtn'); if(p) menu.appendChild(item('PDF (.pdf)','⎙',()=>p.click()));
     const xl=$('#dbExcel'); if(xl && state.mode==='dashboard') menu.appendChild(item('Excel (.xlsx)','▦',()=>xl.click()));
     const csv=document.querySelector('#modeKompleks #kExportCsv, #modeXodim #hExportCsv, #modeMaxsus #exportCsv'); const vis=csv && csv.closest('[id^="mode"]') && csv.closest('[id^="mode"]').style.display!=='none'; if(vis) menu.appendChild(item('CSV','⬇',()=>csv.click()));
+    const ae=$('#adminEntry'); if(ae){ const sep2=document.createElement('div'); sep2.className='m-sep'; menu.appendChild(sep2); menu.appendChild(item(ae.textContent.trim(),'🔐',()=>ae.click())); }
   }
   more.onclick=()=>{ const show=!menu.classList.contains('show'); if(show) buildMenu(); menu.classList.toggle('show',show); more.setAttribute('aria-expanded',String(show)); if(show){ const f=menu.querySelector('button'); if(f) f.focus(); } };
   document.addEventListener('click', e=>{ if(menu.classList.contains('show') && !menu.contains(e.target) && e.target!==more && !more.contains(e.target)){ menu.classList.remove('show'); more.setAttribute('aria-expanded','false'); } });

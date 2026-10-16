@@ -13,4 +13,5 @@ Fayllar:
 - `locales.js` — tarjima lugʻati (uz → ru / en), `i18n.js` — koʻp tillilik yadrosi, `access.js` — maxsus imkoniyatlar, ovozli oʻqish va diagramma muqobillari;
 - `reports.js`, `reports-text.js` — avtomatlashtirilgan tahliliy hisobotlar (Word/PDF, uch tur + umumlashtirilgan, 4 til); texnik hujjat `docs/REPORTS.md`, namuna `examples/`;
 - `mobile.css`, `mobile.js` — mobil va planshet moslashuvi (faqat ≤1023 px; desktop oʻzgarmaydi);
+- `admin.js`, `acl-core.js`, `admin-config.js` — admin panel va menyu koʻrinishini boshqarish (Supabase Auth + RLS); sxema `supabase/schema.sql`, hujjat `docs/ADMIN.md`, testlar `tests/acl-tests.html`;
 - `CHANGELOG.md` — oʻzgarishlar jurnali.

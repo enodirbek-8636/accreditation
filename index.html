@@ -988,7 +988,7 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 
   <div class="section-title" id="ksec-funnel">Jarayon bosqichlari boʻyicha tahlil</div>
   <div class="grid-2">
-    <div class="panel"><div class="panel-head"><div><h3>Jarayon bosqichlari</h3><div class="pdesc">Ariza koʻrib chiqish → ariza rasmiylashtirish → ichki baholash → tashqi baholash → yakunlangan · ▼ ushbu bosqichga yetmaganlar · bosib filtrlang</div></div>
+    <div class="panel"><div class="panel-head"><div><h3>Jarayon bosqichlari</h3><div class="pdesc">Kelib tushgan arizalar va ularning joriy holati: ariza koʻrib chiqishda → ariza rasmiylashtirishda → ichki baholashda → tashqi baholashda → yakunlangan · bosib filtrlang</div></div>
       <button class="mini-btn" data-png="kStageChart">PNG</button></div>
       <div class="chart tall" id="kStageChart"></div></div>
     <div class="panel"><div class="panel-head"><div><h3>Arizalar oqimi (oylar boʻyicha)</h3><div class="pdesc">Ariza berilgan oy · joriy holat kesimida</div></div>
@@ -2824,36 +2824,31 @@ function kStackOpt(keyFn, limit){
 }
 function kRenderCharts(){
   const l=kFiltered();
-  // voronka — ushbu bosqichga yetgan arizalar (keyingi bosqichdagilar ham hisobga olinadi)
-  const funnel = K_ORDER.map(k=>({name:K_STAGE[k].label, value:l.filter(r=>kReachedStage(r,k)).length, col:colOf(K_STAGE[k].col)}));
+  // holatlar taqsimoti — birinchi qator: kelib tushgan arizalar (jami); keyin har bir holat oʻz soni bilan alohida
+  const K_CHART_LBL = {review:'Ariza koʻrib chiqishda', submitted:'Ariza rasmiylashtirishda', internal:'Ichki baholashda', external:'Tashqi baholashda', done:'Yakunlangan'};
   const fTot = l.length || 1;
-  const fd = funnel.map((f,i)=>({...f,
-    pct: safeDiv(f.value,fTot)*100,
-    conv: i===0 ? 100 : safeDiv(f.value, funnel[i-1].value||1)*100,
-    drop: i===0 ? 0 : Math.max(0, funnel[i-1].value - f.value),
-    now: l.filter(r=>r.stage===K_ORDER[i]).length
-  }));
+  const fd = [{k:'', name:'Kelib tushgan arizalar', value:l.length, col:colOf('--c-primary'), pct:100}]
+    .concat(K_ORDER.map(k=>{ const v=l.filter(r=>r.stage===k).length; return {k, name:K_CHART_LBL[k], value:v, col:colOf(K_STAGE[k].col), pct:safeDiv(v,fTot)*100}; }));
   const fr = fd.slice().reverse();   // category oʻqi pastdan yuqoriga
   charts.kStageChart.setOption({textStyle:baseTextStyle(),
-    grid:{left:8,right:168,top:12,bottom:10,containLabel:true},
+    grid:{left:8,right:150,top:12,bottom:10,containLabel:true},
     tooltip:{trigger:'axis',axisPointer:{type:'shadow'},...tipBox(),
       formatter:p=>{const f=fr[p[0].dataIndex];
-        return `<b>${f.name}</b><br/>Ushbu bosqichga yetgan: <b>${f.value}</b> ta (${fmtPct(f.pct)})<br/>Hozir shu bosqichda: <b>${f.now}</b> ta`
-          + (f.conv<100 ? `<br/>Oldingi bosqichdan oʻtgan: ${fmtPct(f.conv)}<br/>Ushbu bosqichga yetmagan: <b>${f.drop}</b> ta` : '');}},
+        return f.k ? `<b>${f.name}</b><br/>Arizalar: <b>${f.value}</b> ta<br/>Kelib tushganlardan ulushi: ${fmtPct(f.pct)}` : `<b>${f.name}</b><br/>Jami: <b>${f.value}</b> ta`;}},
     xAxis:{type:'value',max:fTot,...axisStyle(),axisLabel:{show:false},splitLine:{show:false}},
     yAxis:{type:'category',data:fr.map(f=>f.name),
-      axisLabel:{color:cssVar('--c-text-2'),fontSize:12,width:170,overflow:'break'},
+      axisLabel:{color:cssVar('--c-text-2'),fontSize:12,width:170,overflow:'break',
+        formatter:v=>v==='Kelib tushgan arizalar'?'{t|'+v+'}':v, rich:{t:{fontWeight:'bold',color:cssVar('--c-text'),fontSize:12}}},
       axisLine:{lineStyle:{color:cssVar('--border')}},axisTick:{show:false}},
     series:[
       {type:'bar',barWidth:'54%',silent:true,z:1,itemStyle:{color:cssVar('--grid-line'),borderRadius:7},data:fr.map(()=>fTot)},
       {type:'bar',barWidth:'54%',z:2,barGap:'-100%',itemStyle:{borderRadius:7},
        data:fr.map(f=>({value:f.value,itemStyle:{color:f.col}})),
        label:{show:true,position:'right',fontSize:12,color:cssVar('--c-text'),
-         formatter:p=>{const f=fr[p.dataIndex];
-           return f.conv>=100 ? `{v|${f.value} ta}  {p|${fmtPct(f.pct)}}` : `{v|${f.value} ta}  {p|${fmtPct(f.pct)}}  {d|▼ ${f.drop}}`;},
-         rich:{v:{fontWeight:'bold',fontSize:13,color:cssVar('--c-text')},p:{fontSize:12,color:cssVar('--c-text-2')},d:{fontSize:11.5,fontWeight:'bold',color:cssVar('--c-failed')}}}}
+         formatter:p=>{const f=fr[p.dataIndex]; return f.k ? `{v|${f.value} ta}  {p|${fmtPct(f.pct)}}` : `{v|${f.value} ta}`;},
+         rich:{v:{fontWeight:'bold',fontSize:13,color:cssVar('--c-text')},p:{fontSize:12,color:cssVar('--c-text-2')}}}}
     ]},true);
-  charts.kStageChart.off('click'); charts.kStageChart.on('click',p=>{ const k=K_ORDER[K_ORDER.length-1-p.dataIndex]; kState.stage=(kState.stage===k)?'':k; kState.page=1; kSyncUI(); kRenderSection(); });
+  charts.kStageChart.off('click'); charts.kStageChart.on('click',p=>{ const k=fr[p.dataIndex].k; kState.stage=(k && kState.stage!==k)?k:''; kState.page=1; kSyncUI(); kRenderSection(); });
 
   // arizalar oqimi — oylar boʻyicha (ariza berilgan sana), joriy holat kesimida
   const mm={};

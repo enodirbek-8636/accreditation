@@ -4069,6 +4069,13 @@ function boot() {
     window.addEventListener('message', e => {
       const d = e.data || {};
       if (d.theme === 'dark' || d.theme === 'light') setTheme(d.theme);
+      if (d.lang && LIDX[d.lang] != null && d.lang !== STATE.lang) setLang(d.lang);   // asosiy platformadan til oʻzgarishi
+      if (d.a11y && typeof d.a11y === 'object') {                                      // maxsus imkoniyatlar sinxroni
+        const h = document.documentElement;
+        h.classList.toggle('reduce-motion', !!d.a11y.motion);
+        if (d.a11y.contrast) h.setAttribute('data-contrast', d.a11y.contrast); else h.removeAttribute('data-contrast');
+        document.body.style.zoom = d.a11y.zoom ? String(d.a11y.zoom) : '';
+      }
     });
   }
   if (STATE.theme !== 'auto') document.documentElement.setAttribute('data-theme', STATE.theme);

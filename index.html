@@ -564,6 +564,66 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
 @media(max-width:900px){.norm-summary{grid-template-columns:1fr}}
 @media(max-width:640px){.kpi-grid{grid-template-columns:1fr}.app-header h1{font-size:19px}.f-group select,.f-group input{min-width:140px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== koʻp tillilik va maxsus imkoniyatlar ===== */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:absolute;left:8px;top:-60px;z-index:1000;background:var(--c-primary);color:#fff;padding:10px 14px;border-radius:8px;font-weight:600;transition:top .15s}
+.skip-link:focus{top:8px;outline:3px solid #ffbf47}
+.lang-switch{display:inline-flex;gap:4px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:3px}
+.lang-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid transparent;color:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:700;cursor:pointer;min-height:32px;letter-spacing:.3px}
+.lang-btn svg{width:22px;height:15px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.lang-btn:hover{background:rgba(255,255,255,.18)}
+.lang-btn.active{background:#fff;color:var(--c-primary);border-color:#fff}
+.a11y-panel{position:fixed;top:72px;right:18px;z-index:120;width:min(380px,calc(100vw - 24px));background:var(--c-card);color:var(--c-text);border:1px solid var(--border);border-radius:14px;box-shadow:0 18px 50px rgba(15,23,42,.28);padding:16px 18px;display:none}
+.a11y-panel.show{display:block}
+.a11y-panel h3{margin:0 0 10px;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.a11y-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--border);font-size:13px}
+.a11y-row .seg{display:inline-flex;gap:4px}
+.a11y-row .seg button,.a11y-panel .mini-btn{border:1px solid var(--border);background:var(--c-bg);color:var(--c-text);border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;min-width:36px;min-height:32px}
+.a11y-row .seg button[aria-pressed="true"]{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+.a11y-switch{position:relative;width:42px;height:24px;border-radius:12px;background:#cbd5e1;border:none;cursor:pointer;flex:none}
+.a11y-switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.a11y-switch[aria-checked="true"]{background:var(--c-passed)}
+.a11y-switch[aria-checked="true"]::after{left:21px}
+.tts-bar{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.tts-btn{border:1px solid var(--border);background:var(--c-bg);color:var(--c-text);border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;min-height:30px;display:inline-flex;align-items:center;gap:4px}
+.tts-btn[aria-pressed="true"],.tts-btn.active{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+.tts-speak{margin-left:6px;vertical-align:middle}
+.tts-text{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--c-bg);border:1px solid var(--border);font-size:13px;line-height:1.5;white-space:pre-wrap}
+.chart-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:2px 0 8px}
+.chart-tools .tts-btn{font-size:11.5px}
+.chart-table-wrap{max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.chart-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.chart-table th,.chart-table td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+.chart-table th:first-child,.chart-table td:first-child{text-align:left;white-space:normal}
+.chart-table th{position:sticky;top:0;background:var(--c-bg);cursor:pointer;user-select:none}
+.chart-table caption{text-align:left;padding:6px 10px;font-weight:600;color:var(--c-text-2)}
+.kpi-info{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--c-bg);color:var(--c-text-2);font-size:13px;line-height:1;cursor:help;display:inline-flex;align-items:center;justify-content:center}
+.kpi-card{position:relative}
+.chart-audio{padding:10px 12px;border-radius:10px;background:var(--c-bg);border:1px solid var(--border);font-size:13px;line-height:1.5}
+:focus-visible{outline:3px solid #ffbf47!important;outline-offset:2px}
+html.a11y-focus *:focus{outline:3px solid #ffbf47!important;outline-offset:2px}
+html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html.simple-view .pdesc,html.simple-view .refdate-note,html.simple-view .schema-box{display:none!important}
+html.simple-view .panel,html.simple-view .kpi-card{box-shadow:none!important}
+html.simple-view body{line-height:1.6}
+html.simple-view .kpi-label{font-size:14px}
+html.simple-view .chart-tools{order:-1}
+html[data-contrast="light"]{--c-bg:#ffffff;--c-card:#ffffff;--c-text:#000000;--c-text-2:#1a1a1a;--border:#000000;--grid-line:#9a9a9a;--c-primary:#001a66;--c-primary-2:#00308f;--c-passed:#006400;--c-failed:#b00000;--c-progress:#7a4a00;--c-neutral:#333333;--shadow:none}
+html[data-contrast="light"] body{background:#fff}
+html[data-contrast="light"] .app-header{background:#001a66!important;background-image:none!important}
+html[data-contrast="light"] .mode-btn.active{background:#001a66!important;color:#fff!important}
+html[data-contrast="light"] .nav-item.active{background:#e8edf7!important;color:#000!important}
+html[data-contrast="light"] .gap-badge,html[data-contrast="light"] .badge{border:1px solid currentColor}
+html[data-contrast="dark"]{--c-bg:#000000;--c-card:#0a0a0a;--c-text:#ffffff;--c-text-2:#f0f0f0;--border:#ffffff;--grid-line:#666666;--c-primary:#9ecbff;--c-primary-2:#7fb8ff;--c-passed:#5cff8a;--c-failed:#ff7b7b;--c-progress:#ffd766;--c-neutral:#d0d0d0;--shadow:none}
+html[data-contrast="dark"] body{background:#000;color:#fff}
+html[data-contrast="dark"] .app-header{background:#000!important;background-image:none!important;border-bottom:2px solid #fff}
+html[data-contrast="dark"] .panel,html[data-contrast="dark"] .kpi-card,html[data-contrast="dark"] .main-sidebar,html[data-contrast="dark"] .app-modal{background:#0a0a0a!important;border-color:#fff!important}
+html[data-contrast="dark"] .mode-btn.active{background:#fff!important;color:#000!important}
+html[data-contrast="dark"] .nav-item.active{background:#333!important;color:#fff!important}
+html[data-contrast="dark"] .gap-badge,html[data-contrast="dark"] .badge{border:1px solid currentColor}
+html[data-contrast] .kpi-ic{border:1px solid currentColor}
+@media(max-width:640px){.lang-btn .lang-code{display:none}.lang-btn{padding:5px 7px}.a11y-panel{top:auto;bottom:12px;right:12px;left:12px;width:auto}}
 </style>
 </head>
 <body>
@@ -1188,8 +1248,8 @@ const accreditationData = ACCR.coordinators;
 const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const safeDiv = (a,b) => b === 0 ? 0 : a/b;
-const fmtNum = n => Math.round(n).toLocaleString('ru-RU').replace(/,/g,' ');
-const fmtPct = n => (Math.round(n*10)/10).toFixed(1) + '%';
+const fmtNum = n => (window.I18N && I18N.lang!=='uz') ? I18N.num(n) : Math.round(n).toLocaleString('ru-RU').replace(/,/g,' ');
+const fmtPct = n => (window.I18N && I18N.lang!=='uz') ? I18N.pct(n) : (Math.round(n*10)/10).toFixed(1) + '%';
 const clamp = (v,mi,ma) => Math.max(mi,Math.min(ma,v));
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 function hexA(hex, a){
@@ -3066,13 +3126,14 @@ function kRenderSection(){ kRenderKPI(); kRenderCharts(); kRenderTable(); }
 /* ============ 27. REJIMLARNI ALMASHTIRISH ============ */
 const MODE_PANELS = {dashboard:'#modeDashboard', maxsus:'#modeMaxsus', kompleks:'#modeKompleks', xodim:'#modeXodim', tashkilot:'#modeTashkilot', grafik:'#modeGrafik'};
 const EMBED_MODES = {tashkilot:'#frameTashkilot', grafik:'#frameGrafik'};
-const EMBED_VER = '20261016-1';   // institutional.html yangilanganda bu qiymatni oʻzgartiring (kesh yangilanadi)
+const EMBED_VER = '20261017-1';   // institutional.html yangilanganda bu qiymatni oʻzgartiring (kesh yangilanadi)
 // embed iframe'lar: faqat birinchi ochilganda yuklanadi, mavzu asosiy platforma bilan sinxron
 /* ichki boʻlimlar (taʼlim darajasi boʻyicha): tanlangan daraja ichki oynaga f_level filtri sifatida uzatiladi */
 const embedLevel = {tashkilot:'', grafik:''};
 function embedSrc(m, extra){
   // &v= — kesh belgisi: har bir nashrda EMBED_VER yangilanadi, shunda brauzer eski institutional.html ni koʻrsatmaydi
-  const q = new URLSearchParams(Object.assign({embed:'1', page: m==='grafik'?'timeline':'orgs', lang:'ul', theme: state.theme==='dark'?'dark':'light', v: EMBED_VER}, extra||{}));
+  const lang = (window.I18N && I18N.LANGS[I18N.lang]) ? I18N.LANGS[I18N.lang].embed : 'ul';
+  const q = new URLSearchParams(Object.assign({embed:'1', page: m==='grafik'?'timeline':'orgs', lang, theme: state.theme==='dark'?'dark':'light', v: EMBED_VER}, extra||{}));
   if(embedLevel[m] && !q.get('f_level')) q.set('f_level', embedLevel[m]);
   return 'institutional.html?' + q.toString();
 }
@@ -4527,7 +4588,7 @@ function reportMaxsus(){
 
   x += docH('1.3. Ish hajmi boʻyicha tahlil', 2);
   const t3=byLoad[0], l3=byLoad[byLoad.length-1];
-  x += docP(`Ish hajmi koordinatorlar oʻrtasida notekis taqsimlangan. Eng katta yuklama ${shortName(t3.coordinator)} zimmasida boʻlib, u ${t3.progTotal} ta dastur va ${t3.appTotal} ta ariza yuritmoqda (ish hajmi indeksi ${_pct(t3.workloadIndex)}). Eng kam yuklama esa ${shortName(l3.coordinator)}da — ${l3.progTotal} ta dastur. Bunday tafovut ish yukini qayta muvozanatlash imkoniyatini koʻrsatadi, bu orqali umumiy samaradorlikni oshirish va ayrim xodimlardagi ortiqcha yuklamani kamaytirish mumkin.`);
+  x += docP(`Ish hajmi koordinatorlar oʻrtasida notekis taqsimlangan. Eng katta yuklama ${shortName(t3.coordinator)} zimmasida boʻlib, u ${t3.progTotal} ta dastur va ${t3.appTotal} ta ariza yuritmoqda (ish hajmi indeksi ${_pct(t3.workloadIndex)}). Eng kam yuklama esa ${shortName(l3.coordinator)} zimmasida — ${l3.progTotal} ta dastur. Bunday tafovut ish yukini qayta muvozanatlash imkoniyatini koʻrsatadi, bu orqali umumiy samaradorlikni oshirish va ayrim xodimlardagi ortiqcha yuklamani kamaytirish mumkin.`);
   x += docTable(
     ['Koordinator','Dasturlar','Arizalar','Oʻtgan','Jarayonda','Ish hajmi indeksi'],
     byLoad.slice(0,8).map(m=>[shortName(m.coordinator), String(m.progTotal), String(m.appTotal),
@@ -5269,12 +5330,14 @@ function dbReportData(){
 function dbExport(fmt){
   toast('Hisobot tayyorlanmoqda...');
   setTimeout(()=>{ try{
-    const R=dbReportData(), title='Davlat akkreditatsiyasi — rahbariyat hisoboti', sub=`Hisobot sanasi: ${fmtDate(dbState.ref)} · manba: NQAAE monitoring platformasi`;
+    const TR = s => (window.I18N ? I18N.tr(s) : s);
+    const R=dbReportData(), title=TR('Davlat akkreditatsiyasi — rahbariyat hisoboti'), sub=TR(`Hisobot sanasi: ${fmtDate(dbState.ref)} · manba: NQAAE monitoring platformasi`);
+    R.kpi=R.kpi.map(r=>r.map(TR)); R.filt=R.filt.map(r=>r.map(TR)); R.regs=R.regs.map(r=>r.map(TR)); R.edus=R.edus.map(r=>r.map(TR)); R.years=R.years.map(r=>r.map(TR)); R.stages=R.stages.map(r=>r.map(TR)); R.recon=R.recon.map(r=>r.map(TR));
     const stamp=dbState.ref.replace(/-/g,'');
     if(fmt==='xlsx'){
       if(typeof XLSX==='undefined') throw new Error('Excel kutubxonasi yuklanmadi');
       const wb=XLSX.utils.book_new();
-      const sh=(name,aoa)=>XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), name);
+      const sh=(name,aoa)=>XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa.map(r=>r.map(v=>typeof v==='string'?TR(v):v))), TR(name).slice(0,31));
       sh('KPI', [[title],[sub],[],['Koʻrsatkich','Qiymat','Birlik'],...R.kpi,[],['Filtrlar'],...R.filt]);
       sh('Hududlar', [['Hudud','Amalda','Muddati yaqin','Muddati oʻtgan','Jarayonda','Maʼlumot yoʻq','Jami'],...R.regs]);
       sh('Taʼlim turlari', [['Taʼlim turi','Tashkilotlar','Amalda','Muddati oʻtgan','Kompleks arizalar','Maxsus dasturlar','Maxsus oʻtgan'],...R.edus]);
@@ -5297,7 +5360,7 @@ function dbExport(fmt){
       secs.forEach(s=>{ x+=docH(s[0],1); s[1].forEach(p=>x+=docP(p)); if(s[2]) x+=docTable(s[2], s[3].map(r=>r.map(v=>String(v)))); });
       downloadDocx(x, `dashboard_${stamp}.docx`); toast('Word hisoboti yuklab olindi');
     } else {
-      const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+      const esc=s=>String(TR(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;');
       let h=`<div class="rtitle">${esc(title)}</div><div class="rsub">${esc(sub)}</div><p style="text-indent:0">Filtrlar: ${esc(R.filt.map(f=>f[0]+' — '+f[1]).join('; '))}</p>`;
       secs.forEach(s=>{ h+=`<h1>${esc(s[0])}</h1>`; s[1].forEach(p=>h+=`<p>${esc(p)}</p>`); if(s[2]) h+=`<table><thead><tr>${s[2].map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${s[3].map(r=>`<tr>${r.map(v=>`<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`; });
       const w=window.open('','_blank'); if(!w){ toast('Brauzer yangi oynani blokladi — ruxsat bering'); return; }
@@ -5442,5 +5505,9 @@ function initReveal(){
 }
 document.addEventListener('DOMContentLoaded', ()=>setTimeout(initReveal, 0));
 </script>
+<!-- koʻp tillilik (uz / ru / en) va maxsus imkoniyatlar -->
+<script src="locales.js?v=20261017-1"></script>
+<script src="i18n.js?v=20261017-1"></script>
+<script src="access.js?v=20261017-1"></script>
 </body>
 </html>

@@ -1,5 +1,21 @@
 # Oʻzgarishlar jurnali — Davlat akkreditatsiyasi monitoringi
 
+## 2026-10-17 — Mobil va planshet moslashuvi
+
+### Qoʻshildi (faqat ≤1023 px ekranlar; desktop oʻzgarmagan)
+- `mobile.css` (`media="(max-width:1023px)"` bilan ulangan) va `mobile.js`: barcha mobil qoidalar alohida, desktop CSS tegilmagan.
+- **Mobil sarlavha**: yopishqoq, ixcham; gamburger tugmasi chap yon panelni tortma (drawer) sifatida ochadi (tashqariga bosish, Esc va «orqaga» bilan yopiladi, fokus boshqariladi, fon aylantirilmaydi); til bayroqlari va maxsus imkoniyatlar tugmasi koʻrinib turadi; mavzu, toʻliq ekran, yangilash, tahliliy hisobotlar, Word/PDF/Excel/CSV eksportlari «⋯» qoʻshimcha menyusida.
+- **Filtrlar**: har bir boʻlimdagi filtr paneli oʻrniga «Filtrlar» tugmasi (faol filtrlar soni va chiplar bilan); bosilganda pastki varaq (bottom sheet) ochiladi: Qoʻllash / Tozalash; tanlangan qiymatlar saqlanadi, oʻsha manba maʼlumot ishlatiladi.
+- **Dashboard va boʻlimlar**: KPI kartalar 2 ustun (320–374 px da 1 ustun), tahliliy panellar vertikal, diagrammalar ekran eniga moslashadi (kichik shriftlar, aylanuvchi legenda, qisqartirilgan oʻq yozuvlari, chegaralangan tultiplar), har bir diagrammada «Kattalashtirish» (toʻliq ekran koʻrinishi).
+- **Jadvallar → kartalar** (≤767 px): arizalar, dasturlar, xodimlar, guruhlar reyestrlari karta koʻrinishida; ustun nomlari saralash chiplari sifatida qoladi, qidiruv, sahifalash, CSV eksport va «Batafsil ›» (qator bosilganda kartochka) saqlanadi. Planshetda (768–1023 px) jadvallar oʻz konteyneri ichida gorizontal aylanadi, sahifa toshib ketmaydi.
+- **Taʼlim tashkilotlari va Akkreditatsiya grafigi** (institutional.html): reyestr jadvali kartalarga aylanadi, filtr paneli gorizontal aylanadi, sensor nishonlari ≥40 px.
+- **Sensor va kirish imkoniyati**: tugma va maydonlar ≥44 px, select/input 16 px shrift (iOS masshtablashini oldini oladi), safe-area chekkalari, landshaft holat uchun alohida qoida.
+
+### Tekshiruv natijalari
+- 390 px: sahifa kengligi = 390, toshib ketish yoʻq; tortma 0–320 px; filtr varagʻi va kartalar ishlaydi; diagrammalar 340–349 px enida.
+- 768 px: KPI 2 ustun, jadvallar konteyner ichida aylanadi, sahifa kengligi 759 px.
+- 1440 px: mobil elementlar yashirin, desktop koʻrinishi oʻzgarmagan.
+
 ## 2026-10-17 — Avtomatlashtirilgan tahliliy hisobotlar
 
 ### Qoʻshildi

@@ -1,0 +1,144 @@
+/* =====================================================================
+   NQAAE monitoring — MOBIL / PLANSHET MOSLASHUVI
+   Barcha qoidalar faqat 1023 px va undan kichik ekranlar uchun amal qiladi;
+   desktop (≥1024 px) koʻrinishi oʻzgarmaydi.
+   ===================================================================== */
+.m-burger,.m-more,.m-scrim,.m-filter-toggle,.m-filter-foot,.m-more-menu,.m-expand{display:none}
+
+@media (max-width:1023px){
+  html,body{overflow-x:hidden;max-width:100%}
+  body{padding:8px 8px calc(16px + env(safe-area-inset-bottom)) 8px}
+  /* ---- sarlavha: kompakt, yopishqoq ---- */
+  .app-header{position:sticky;top:0;z-index:95;padding:10px 12px;gap:8px;margin-bottom:12px;border-radius:12px;flex-wrap:nowrap;align-items:center}
+  .app-header>div:first-child{min-width:0;flex:1 1 auto;display:flex;align-items:center;gap:8px}
+  .app-header h1{font-size:14px;line-height:1.15;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;letter-spacing:0}
+  .header-meta{display:none}
+  .app-header>div:last-child{flex:0 0 auto;gap:6px}
+  .header-actions{gap:6px;flex-wrap:nowrap}
+  .header-actions .report-icons,.header-actions #themeBtn,.header-actions #fsBtn,.header-actions #rpBtn,.header-actions .a11y-lbl{display:none}
+  .m-burger,.m-more{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border-radius:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;flex:none}
+  .m-burger svg,.m-more svg{width:22px;height:22px}
+  #a11yBtn{width:44px;height:44px;padding:0;justify-content:center}
+  #a11yBtn svg{width:20px;height:20px;margin:0}
+  .lang-switch{padding:2px}.lang-btn{padding:6px 7px;min-height:40px}.lang-btn .lang-code{display:none}
+  /* ---- qoʻshimcha menyu ---- */
+  .m-more-menu{position:fixed;top:64px;right:10px;z-index:130;background:var(--c-card);color:var(--c-text);border:1px solid var(--border);border-radius:14px;box-shadow:0 16px 48px rgba(15,23,42,.3);min-width:240px;padding:6px;flex-direction:column}
+  .m-more-menu.show{display:flex}
+  .m-more-menu button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:0 12px;min-height:46px;font-size:14px;color:var(--c-text);cursor:pointer}
+  .m-more-menu button:hover,.m-more-menu button:focus-visible{background:var(--c-bg)}
+  .m-more-menu .m-sep{height:1px;background:var(--border);margin:4px 8px}
+  .m-more-menu .m-meta{font-size:12px;color:var(--c-text-2);padding:6px 12px 2px}
+  /* ---- yon panel → tortma ---- */
+  .app-layout{display:block}
+  .main-sidebar{position:fixed;top:0;left:0;bottom:0;width:min(320px,86vw);max-height:none;height:100%;transform:translateX(-105%);transition:transform .25s ease;z-index:125;background:var(--c-card);overflow-y:auto;padding:12px 12px calc(16px + env(safe-area-inset-bottom));border-radius:0 18px 18px 0;box-shadow:12px 0 40px rgba(15,23,42,.3);margin:0}
+  html.reduce-motion .main-sidebar{transition:none}
+  body.m-nav-open .main-sidebar{transform:translateX(0)}
+  .m-scrim{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:120;backdrop-filter:blur(2px)}
+  body.m-nav-open .m-scrim,body.m-sheet-open .m-scrim{display:block}
+  body.m-nav-open,body.m-sheet-open{overflow:hidden}
+  .main-sidebar .m-drawer-head{display:flex;justify-content:space-between;align-items:center;padding:4px 4px 10px;font-weight:700;font-size:15px;color:var(--c-text)}
+  .main-sidebar .m-drawer-head button{width:40px;height:40px;border-radius:10px;border:1px solid var(--border);background:var(--c-bg);color:var(--c-text);font-size:18px}
+  .mode-switch{border:0;box-shadow:none;background:transparent;padding:0}
+  .mode-btn{min-height:48px}
+  .nav-item{min-height:44px}
+  .app-main{width:100%}
+  /* ---- panellar va toʻrlar ---- */
+  .panel{padding:12px 12px;min-width:0}
+  .panel-head{flex-wrap:wrap;gap:6px}
+  .panel-head h3{font-size:14.5px}
+  .pdesc{font-size:12px}
+  .section-title{font-size:15px;margin:4px 0 10px}
+  .grid-2,.grid-3,.db-grid-2,.db-grid-3e,.db-grid-21,.sim-grid,.norm-summary,.leader-grid{grid-template-columns:1fr;gap:12px}
+  .kpi-grid,.db-kpi{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .kpi-card{padding:12px 12px;min-width:0}
+  .kpi-label{font-size:12.5px;line-height:1.25}
+  .kpi-value{font-size:24px;letter-spacing:-.3px;word-break:break-word}
+  .kpi-pct{font-size:11.5px}
+  .chart{height:300px!important;max-width:100%}
+  .chart.tall{height:340px!important}
+  .photo-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .schema-box{font-size:12.5px}
+  /* ---- filtrlar: «Filtrlar» tugmasi + pastki varaq ---- */
+  .m-filter-toggle{display:flex;align-items:center;gap:8px;width:100%;min-height:46px;padding:0 14px;margin-bottom:12px;border-radius:12px;border:1px solid var(--border);background:var(--c-card);color:var(--c-text);font-weight:600;font-size:14px;cursor:pointer;box-shadow:var(--shadow);text-align:left}
+  .m-filter-toggle .m-cnt{background:var(--c-primary);color:#fff;border-radius:12px;min-width:22px;height:22px;padding:0 7px;font-size:12px;display:inline-flex;align-items:center;justify-content:center}
+  .m-filter-toggle .m-cnt:empty{display:none}
+  .m-filter-toggle .m-chips{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;justify-content:flex-end;font-weight:400}
+  .m-filter-toggle .m-chips span{background:var(--c-bg);border:1px solid var(--border);border-radius:12px;padding:2px 8px;font-size:11.5px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .m-filter-bar{display:none!important}
+  .m-filter-bar.m-open{display:flex!important;position:fixed;left:0;right:0;bottom:0;z-index:130;max-height:84vh;overflow:auto;flex-direction:column;align-items:stretch;gap:10px;margin:0;border-radius:18px 18px 0 0;padding:14px 16px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(15,23,42,.3)}
+  .m-filter-bar.m-open .f-group{width:100%}
+  .m-filter-bar.m-open .f-group select,.m-filter-bar.m-open .f-group input{width:100%;min-width:0;min-height:44px;font-size:16px}
+  .m-filter-bar.m-open .chips{gap:8px}
+  .m-filter-bar.m-open .chip{min-height:40px;display:inline-flex;align-items:center}
+  .m-filter-bar.m-open .db-actions,.m-filter-bar.m-open .result-count{width:100%}
+  .m-filter-bar.m-open .btn-clear{min-height:44px}
+  .m-filter-foot{display:flex;gap:8px;position:sticky;bottom:0;background:var(--c-card);padding-top:8px;border-top:1px solid var(--border)}
+  .m-filter-foot button{flex:1;min-height:46px;border-radius:12px;border:1px solid var(--border);background:var(--c-bg);color:var(--c-text);font-weight:600;font-size:14px}
+  .m-filter-foot button.m-apply{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+  .f-group select,.f-group input{min-height:44px;font-size:16px}
+  /* ---- tugmalar: sensor nishonlari ---- */
+  .mini-btn,.db-btn,.btn-clear,.tts-btn,.chip,.hbtn{min-height:44px}
+  .pagination button{min-width:40px;min-height:40px}
+  .page-size select{min-height:40px}
+  .table-tools{gap:8px}
+  .chart-tools{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .chart-tools::-webkit-scrollbar{display:none}
+  .m-expand{display:inline-flex}
+  .tts-bar select{max-width:130px}
+  /* ---- modal va yon panellar ---- */
+  .app-modal{width:calc(100vw - 16px)!important;max-width:none!important;max-height:calc(100vh - 24px);overflow:auto;padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+  .side-panel{width:100vw}
+  .am-title{font-size:16px}
+  .am-tl-track .lbl{font-size:9.5px}
+  .embed-frame{height:calc(100vh - 90px);min-height:520px}
+  .a11y-panel{top:auto;bottom:12px;right:8px;left:8px;width:auto;max-height:80vh;overflow:auto}
+  /* ---- tahliliy hisobotlar paneli ---- */
+  #rpModal{padding:6px}
+  .rp-wrap{flex-direction:column;gap:8px}
+  .rp-side{flex:0 0 auto;max-height:46%;padding:10px 12px}
+  .rp-side .rp-grid2{grid-template-columns:1fr 1fr}
+  .rp-pages{padding:8px}
+  /* ---- kattalashtirilgan diagramma ---- */
+  .m-chart-modal{position:fixed;inset:0;z-index:140;background:var(--c-card);display:flex;flex-direction:column;padding:10px 10px calc(10px + env(safe-area-inset-bottom))}
+  .m-chart-modal .m-ch-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .m-chart-modal .m-ch-head h3{flex:1;font-size:15px;color:var(--c-text);min-width:0}
+  .m-chart-modal .m-ch-head button{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--c-bg);color:var(--c-text);font-size:18px}
+  .m-chart-modal .m-ch-body{flex:1;min-height:0;overflow:auto}
+  .m-chart-modal .m-ch-canvas{width:100%;height:100%;min-height:360px}
+}
+
+/* ---- jadvallar → kartalar (telefon) ---- */
+@media (max-width:767px){
+  .kpi-grid,.db-kpi{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .table-scroll{max-height:none;border:0;border-radius:0;overflow:visible}
+  #appMain table.m-cards{display:block;min-width:0!important;width:100%;font-size:13px}
+  #appMain table.m-cards thead{display:block}
+  #appMain table.m-cards thead tr{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px}
+  #appMain table.m-cards thead th{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:16px;padding:0 11px;min-height:36px;font-size:12px;font-weight:600;background:var(--c-bg);color:var(--c-text-2);white-space:nowrap;position:static}
+  #appMain table.m-cards thead th[style*="cursor:default"]{display:none}
+  #appMain table.m-cards thead th:first-child::before{content:attr(data-sort-hint);font-weight:400;margin-right:4px}
+  #appMain table.m-cards tbody{display:block}
+  #appMain table.m-cards tbody tr{display:block;border:1px solid var(--border);border-radius:12px;margin:0 0 10px;padding:10px 12px;background:var(--c-card);box-shadow:var(--shadow)}
+  #appMain table.m-cards tbody tr:hover{background:var(--c-card)}
+  #appMain table.m-cards tbody td{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:4px 0;border:0;max-width:none!important;white-space:normal;text-align:right;line-height:1.35}
+  #appMain table.m-cards tbody td::before{content:attr(data-label);color:var(--c-text-2);font-weight:600;flex:0 0 44%;text-align:left}
+  #appMain table.m-cards tbody td:first-child{font-weight:700;text-align:left;flex-direction:column;align-items:flex-start;gap:2px;border-bottom:1px dashed var(--border);padding-bottom:6px;margin-bottom:4px}
+  #appMain table.m-cards tbody td:first-child::before{flex:none;font-size:11px;font-weight:600}
+  #appMain table.m-cards tbody td[colspan]{display:block;text-align:center}
+  #appMain table.m-cards tbody td[colspan]::before{content:none}
+  #appMain table.m-cards tbody tr.m-link{cursor:pointer}
+  #appMain table.m-cards tbody tr.m-link::after{content:attr(data-more);display:block;text-align:right;color:var(--c-primary-2);font-weight:600;font-size:12.5px;margin-top:6px}
+  #appMain table.m-cards td img,#appMain table.m-cards td .avatar{max-width:40px}
+  .leader-grid{grid-template-columns:1fr}
+  .kpi-value{font-size:22px}
+  .am-gap-row{flex-wrap:wrap;gap:4px}
+}
+@media (max-width:374px){
+  .kpi-grid,.db-kpi{grid-template-columns:1fr}
+  .app-header h1{font-size:15px}
+  .lang-switch{gap:2px}.lang-btn{padding:6px 5px}
+}
+@media (max-width:1023px) and (orientation:landscape) and (max-height:500px){
+  .app-header{position:static}
+  .chart{height:260px!important}
+}

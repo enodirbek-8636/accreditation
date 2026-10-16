@@ -12,4 +12,5 @@ Fayllar:
 - `data-institutions.js` — taʼlim tashkilotlari reyestri maʼlumotlari (ikkala sahifa uchun yagona manba);
 - `locales.js` — tarjima lugʻati (uz → ru / en), `i18n.js` — koʻp tillilik yadrosi, `access.js` — maxsus imkoniyatlar, ovozli oʻqish va diagramma muqobillari;
 - `reports.js`, `reports-text.js` — avtomatlashtirilgan tahliliy hisobotlar (Word/PDF, uch tur + umumlashtirilgan, 4 til); texnik hujjat `docs/REPORTS.md`, namuna `examples/`;
+- `mobile.css`, `mobile.js` — mobil va planshet moslashuvi (faqat ≤1023 px; desktop oʻzgarmaydi);
 - `CHANGELOG.md` — oʻzgarishlar jurnali.

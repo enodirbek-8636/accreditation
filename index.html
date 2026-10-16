@@ -623,6 +623,31 @@ html[data-contrast="dark"] .mode-btn.active{background:#fff!important;color:#000
 html[data-contrast="dark"] .nav-item.active{background:#333!important;color:#fff!important}
 html[data-contrast="dark"] .gap-badge,html[data-contrast="dark"] .badge{border:1px solid currentColor}
 html[data-contrast] .kpi-ic{border:1px solid currentColor}
+/* ===== tahliliy hisobotlar paneli ===== */
+#rpModal{position:fixed;inset:0;z-index:200;background:rgba(15,23,42,.55);display:none;align-items:stretch;justify-content:center;padding:14px}
+.rp-wrap{display:flex;gap:14px;width:100%;max-width:1500px;height:100%}
+.rp-side{flex:0 0 400px;background:var(--c-card);color:var(--c-text);border:1px solid var(--border);border-radius:14px;padding:14px 16px;overflow:auto;font-size:13px}
+.rp-side h3{margin:0 0 10px;font-size:16px;display:flex;justify-content:space-between;align-items:center}
+.rp-side label{display:block;font-weight:600;margin:8px 0 2px;color:var(--c-text-2)}
+.rp-side select,.rp-side input[type=date],.rp-side input[type=number]{width:100%;margin-top:3px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;background:var(--c-bg);color:var(--c-text);font-size:13px;font-weight:400}
+.rp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rp-inl{display:flex;gap:4px}
+.rp-side fieldset{border:1px solid var(--border);border-radius:10px;padding:6px 10px 8px;margin:10px 0 0}
+.rp-side legend{font-weight:700;color:var(--c-text);font-size:12.5px;padding:0 4px}
+.rp-chk{display:inline-flex!important;align-items:center;gap:6px;margin:4px 12px 2px 0!important;font-weight:500!important;color:var(--c-text)!important}
+.rp-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.rp-actions .hbtn{background:var(--c-bg);color:var(--c-text);border-color:var(--border)}
+.rp-actions .rp-primary{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}
+.rp-status{margin-top:8px;font-size:12.5px;color:var(--c-text-2);min-height:18px}
+.rp-q{margin-top:8px}.rp-q ul{margin:6px 0 0 16px;padding:0}.rp-q li{margin:2px 0}
+.rp-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.rp-toolbar{display:flex;gap:12px;align-items:center;background:var(--c-card);border:1px solid var(--border);border-radius:12px 12px 0 0;padding:8px 12px;color:var(--c-text);font-size:13px}
+.rp-toolbar .rp-zoom{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.rp-pages{flex:1;overflow:auto;background:#cfd6e0;border-radius:0 0 12px 12px;padding:18px;--rp-zoom:1}
+.rp-page{width:210mm;min-height:297mm;background:#fff;color:#000;margin:0 auto 16px;box-shadow:0 4px 18px rgba(0,0,0,.25);position:relative;padding:15mm 15mm 15mm 25mm;box-sizing:border-box;transform:scale(var(--rp-zoom));transform-origin:top center}
+.rp-page .rp-pn{position:absolute;top:6mm;left:0;right:0;text-align:center;font-family:Calibri,Arial;font-size:13pt;color:#000}
+#rpModal .hbtn{min-height:34px}
+@media(max-width:1000px){.rp-wrap{flex-direction:column}.rp-side{flex:0 0 auto;max-height:45%}}
 @media(max-width:640px){.lang-btn .lang-code{display:none}.lang-btn{padding:5px 7px}.a11y-panel{top:auto;bottom:12px;right:12px;left:12px;width:auto}}
 </style>
 </head>
@@ -5508,5 +5533,8 @@ document.addEventListener('DOMContentLoaded', ()=>setTimeout(initReveal, 0));
 <script src="locales.js?v=20261017-1"></script>
 <script src="i18n.js?v=20261017-1"></script>
 <script src="access.js?v=20261017-1"></script>
+<!-- avtomatlashtirilgan tahliliy hisobotlar (Word / PDF, namunaviy dizayn standarti) -->
+<script src="reports.js?v=20261017-1"></script>
+<script src="reports-text.js?v=20261017-1"></script>
 </body>
 </html>

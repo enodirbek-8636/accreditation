@@ -1,5 +1,14 @@
 # Oʻzgarishlar jurnali — Davlat akkreditatsiyasi monitoringi
 
+## 2026-10-17 — Avtomatlashtirilgan tahliliy hisobotlar
+
+### Qoʻshildi
+- **«Tahliliy hisobotlar» paneli** (sarlavhada): hisobot turi (umumiy akkreditatsiya holati · kompleks · maxsus · umumlashtirilgan), til (ўзбек кирилл — standart, lotin, рус, English), hajm (qisqa / standart / batafsil), hisobot sanasi va davr, kontekstga bogʻliq filtrlar (taʼlim turi, hudud, mulkchilik, daraja, bilim sohasi), tarkibiy qismlar, sozlanadigan meʼyoriy chegaralar, A4 koʻrish oynasi (sahifalar, masshtab, chop etish), eksport: Word (.docx), PDF, Word + PDF.
+- **Hisobot dvigateli** (`reports.js`, `reports-text.js`): bitta hujjat modeli → DOCX (OOXML, kolontitul raqami, rasmli diagrammalar, jadvallar, «Маълумот учун» bloklari) va HTML/PDF. Dizayn «Сертификатлаш ДЗ 14.10.26_1.docx» namunasidan dasturiy ajratilgan (shrift, oʻlchamlar, ranglar, maydonlar, diagramma palitrasi).
+- **Tahliliy matn generatori**: Fakt → son → taqqoslash → talqin → boshqaruv xulosasi mantigʻi; I. Амалдаги ҳолат, II. Тизимли масалалар (avtomatik aniqlanadi), III. Таклифлар (masʼul, muddat, natija koʻrsatkichi bilan; «taxliliy taklif» sifatida).
+- **Maʼlumot sifati tekshiruvi** va metodika qaydi hisobot yakunida; namuna hisobot `examples/` papkasida.
+- Texnik hujjat: `docs/REPORTS.md`.
+
 ## 2026-10-17 — Koʻp tillilik va maxsus imkoniyatlar
 
 ### Qoʻshildi

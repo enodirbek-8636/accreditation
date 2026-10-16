@@ -11,4 +11,5 @@ Fayllar:
 - `institutional.html` — taʼlim tashkilotlari reyestri va akkreditatsiya grafigi (asosiy platforma ichida ochiladi);
 - `data-institutions.js` — taʼlim tashkilotlari reyestri maʼlumotlari (ikkala sahifa uchun yagona manba);
 - `locales.js` — tarjima lugʻati (uz → ru / en), `i18n.js` — koʻp tillilik yadrosi, `access.js` — maxsus imkoniyatlar, ovozli oʻqish va diagramma muqobillari;
+- `reports.js`, `reports-text.js` — avtomatlashtirilgan tahliliy hisobotlar (Word/PDF, uch tur + umumlashtirilgan, 4 til); texnik hujjat `docs/REPORTS.md`, namuna `examples/`;
 - `CHANGELOG.md` — oʻzgarishlar jurnali.

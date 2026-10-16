@@ -3215,7 +3215,8 @@ function viewOrgs(root) {
   const tl = tally(rows);
   const strip = el('div', { class: 'grid g-kpi mb' });
   strip.appendChild(kpiTile('total', 'c.total', rows.length, nf(MODEL.rows.length) + ' ' + t('f.of'), () => { clearFilters(); afterFilter(); }));
-  STATUS_ORDER.forEach(s => strip.appendChild(kpiTile(s, 'st.' + s, tl[s], pct(tl[s], rows.length) + '%', () => toggleStatusFilter(s), pct(tl[s], rows.length))));
+  /* qiymati 0 boʻlgan (maʼlumot mavjud boʻlmagan) holat kartalari koʻrsatilmaydi */
+  STATUS_ORDER.filter(s => tl[s] > 0).forEach(s => strip.appendChild(kpiTile(s, 'st.' + s, tl[s], pct(tl[s], rows.length) + '%', () => toggleStatusFilter(s), pct(tl[s], rows.length))));
   root.appendChild(strip);
   renderTable(root, rows, { title: t('page.orgs'), subtitle: nf(rows.length) + ' ' + t('c.orgs') + ' · ' + t('io.exportNote') });
 }

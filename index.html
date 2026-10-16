@@ -648,7 +648,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <button class="nav-item active" data-target="ksec-top"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg></span>Umumiy koʻrsatkichlar</button>
     <button class="nav-item" data-target="ksec-funnel"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v7l-4 2v-9L3 4z"/></svg></span>Jarayon bosqichlari</button>
     <button class="nav-item" data-target="ksec-result"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.2 13.9L7 22l5-3 5 3-1.2-8.1"/></svg></span>Akkreditatsiya natijalari</button>
-    <button class="nav-item" data-target="ksec-terms"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Kutish muddati tahlili</button>
     <button class="nav-item" data-target="ksec-registry"><span class="nic"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>Arizalar reyestri</button>
   </nav>
   </div>
@@ -1015,15 +1014,6 @@ html[data-theme="dark"] .ri-pdf:hover{color:#f28b82;border-color:#f28b82}
     <div class="chart" id="kResultChart" style="height:260px"></div>
   </div>
 
-  <div class="section-title" id="ksec-terms">Kutish muddati tahlili</div>
-  <div class="grid-2">
-    <div class="panel"><div class="panel-head"><div><h3>Kutish muddati taqsimoti</h3><div class="pdesc">Jarayondagi arizalar · ariza berilganidan hisobot sanasigacha · shartli meʼyor: 120 kungacha, 180+ kun — kritik · bosib filtrlang</div></div>
-      <button class="mini-btn" data-png="kAgeChart">PNG</button></div>
-      <div class="chart tall" id="kAgeChart"></div></div>
-    <div class="panel"><div class="panel-head"><div><h3>Holatlar boʻyicha oʻrtacha kutish</h3><div class="pdesc">Oʻrtacha va mediana (kun) · yakunlanganlar uchun — komissiya bayonigacha</div></div>
-      <button class="mini-btn" data-png="kStageAgeChart">PNG</button></div>
-      <div class="chart tall" id="kStageAgeChart"></div></div>
-  </div>
 
   <div class="section-title" id="ksec-registry">Arizalar reyestri</div>
   <div class="panel" style="margin-bottom:18px">
@@ -1391,7 +1381,7 @@ function animateNumber(el, target, isPct){
 /* ============ 7. ECharts DIAGRAMMALAR ============ */
 let charts = {};
 function initCharts(){
-  ['stackChart','gaugeChart','appDonut','progDonut','riskMap','bubbleChart','eduChart','ownChart','lvlChart','fieldChart','sessionChart','heiChart','gapChart','overdueChart','ganttChart','kStageChart','kMonthChart','kEduChart','kOwnChart','kCoordChart','kResultChart','kAgeChart','kStageAgeChart','hLoadChart','hScatter','hCritChart','hRankChart','hCatChart','hCompareChart','gLoadChart','gRadarChart','gScoreChart'].forEach(id=>{
+  ['stackChart','gaugeChart','appDonut','progDonut','riskMap','bubbleChart','eduChart','ownChart','lvlChart','fieldChart','sessionChart','heiChart','gapChart','overdueChart','ganttChart','kStageChart','kMonthChart','kEduChart','kOwnChart','kCoordChart','kResultChart','hLoadChart','hScatter','hCritChart','hRankChart','hCatChart','hCompareChart','gLoadChart','gRadarChart','gScoreChart'].forEach(id=>{
     if(charts[id]){ charts[id].dispose(); }
     const el = $('#'+id);
     if(!el){ delete charts[id]; return; }   // platformadan olib tashlangan diagramma
@@ -2803,9 +2793,7 @@ function kRenderKPI(){
     {label:'Tashqi baholash',v:st('external'),ic:'target',col:'#84cc16'},
     {label:'Yakunlangan',v:done,ic:'check',col:'--c-passed',sub:fmtPct(safeDiv(done,l.length)*100)+' umumiydan'},
     {label:'Akkreditatsiyadan oʻtgan',v:passed,ic:'award',col:'--c-passed',sub:done?fmtPct(safeDiv(passed,done)*100)+' yakunlanganlardan':''},
-    {label:'Akkreditatsiyadan oʻtolmagan',v:failed,ic:'x',col:'--c-failed',sub:done?fmtPct(safeDiv(failed,done)*100)+' yakunlanganlardan':''},
-    {label:'Oʻrtacha kutish (jarayonda)',v:kAvg(ages),ic:'clock',col:'--c-progress',sfx:' kun',sub:ages.length?`mediana ${Math.round(kMedian(ages))} kun`:''},
-    {label:`Kritik kutish (${K_WAIT_CRIT}+ kun)`,v:crit,ic:'x',col:'--c-failed',sub:warn?`uzoq kutish (${K_WAIT_WARN+1}–${K_WAIT_CRIT}) ${warn} ta`:''}
+    {label:'Akkreditatsiyadan oʻtolmagan',v:failed,ic:'x',col:'--c-failed',sub:done?fmtPct(safeDiv(failed,done)*100)+' yakunlanganlardan':''}
   ].filter(x=>x.v).map(kCard).join('');   // 0 qiymatli kartalar koʻrsatilmaydi
   $('#kCount').textContent=l.length; $('#kTotal').textContent=KOMPLEKS.length;
 }
